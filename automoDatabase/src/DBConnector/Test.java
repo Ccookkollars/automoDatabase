@@ -6,6 +6,7 @@ public class Test {
 
     public static void main(String[] args) {
 
+        MasterFrame mFrame = MasterFrame.getInstance();
         JFrame testFrame = new CarSearchFrame();
         DBQuery queryMaker = new DBQuery();
 

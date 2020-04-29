@@ -1,7 +1,7 @@
 package DBConnector;
 
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -9,6 +9,8 @@ import javax.swing.table.TableModel;
  */
 public class CarSearchFrame extends javax.swing.JFrame {
 
+    public static final Logger LOG = Logger.getLogger("CarSearchFrame");
+    public static final int VIN_COLUMN = 2;
     /**
      * Creates new form CarSearchFrame
      */
@@ -61,7 +63,7 @@ public class CarSearchFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Make", "Model", "Year"
+                "Make", "Model", "VIN"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -73,6 +75,11 @@ public class CarSearchFrame extends javax.swing.JFrame {
             }
         });
         resultsTable.getTableHeader().setReorderingAllowed(false);
+        resultsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resultsTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(resultsTable);
         if (resultsTable.getColumnModel().getColumnCount() > 0) {
             resultsTable.getColumnModel().getColumn(0).setResizable(false);
@@ -139,7 +146,8 @@ public class CarSearchFrame extends javax.swing.JFrame {
     //Currently only adds 2 fields, needs to implement year
     private void allCarsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCarsButtonActionPerformed
 
-        String[] results = queryMaker.makeModelYear();
+        int colnum = 3;
+        String[] results = queryMaker.makeModelYearVin();
         DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
         if (model.getRowCount() > 0) {
             int rowCount = model.getRowCount();
@@ -147,10 +155,24 @@ public class CarSearchFrame extends javax.swing.JFrame {
                 model.removeRow(0);
             }
         }
-        for (int i = 0; i <= results.length - 2; i += 2) {
-            model.addRow(new Object[]{results[i], results[i + 1]});
+        for (int i = 0; i <= results.length - colnum; i += colnum) {
+            model.addRow(new Object[]{results[i], results[i + 1], results[i + 2]});
         }
     }//GEN-LAST:event_allCarsButtonActionPerformed
+
+    private void resultsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultsTableMouseClicked
+        resultsTable.getSelectedRow();
+        String vin = (String) resultsTable.getValueAt(resultsTable.getSelectedRow(), VIN_COLUMN);
+        Vehicle vehicle = vehicleDao.getVehicle(vin);
+        LOG.info(vehicle.toString());
+        java.awt.EventQueue.invokeLater(() -> {
+            SingleVehicleView svv = new SingleVehicleView(vehicle);
+            svv.setVisible(true);
+            MasterFrame.getInstance().addTab(svv);
+            MasterFrame.getInstance().setSize(300, 300);
+           
+        });
+    }//GEN-LAST:event_resultsTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -188,6 +210,7 @@ public class CarSearchFrame extends javax.swing.JFrame {
         });
     }
 
+    private VehicleDao vehicleDao = new VehicleDao();
     private DBQuery queryMaker;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

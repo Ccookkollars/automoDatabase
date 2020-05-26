@@ -5,7 +5,6 @@
  */
 package DBConnector;
 
-import com.automo.SingleCustomerPanel;
 import java.util.logging.Logger;
 
 /**
@@ -20,10 +19,6 @@ public class ClaimFrame extends javax.swing.JFrame {
      */
     public ClaimFrame() {
         initComponents();
-        claimPanel = new SingleClaimPanel();
-        claimPanel.setVisible(true);
-        vehiclePanel = new SingleVehiclePanel();
-        vehiclePanel.setVisible(true);
     }
 
     /**
@@ -36,36 +31,59 @@ public class ClaimFrame extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jSplitPane1 = new javax.swing.JSplitPane();
-        claimPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
         singleCustomerPanel1 = new com.automo.SingleCustomerPanel();
-        vehiclePanel = new javax.swing.JPanel();
+        singleClaimPanel1 = new com.automo.SingleClaimPanel();
+        singleVehiclePanel1 = new com.automo.SingleVehiclePanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(1, 1, 1));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jSplitPane1.setPreferredSize(new java.awt.Dimension(500, 500));
+        jLabel1.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(jLabel1, gridBagConstraints);
 
-        claimPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        claimPanel.setMinimumSize(new java.awt.Dimension(120, 120));
-        claimPanel.setName(""); // NOI18N
-        claimPanel.setPreferredSize(new java.awt.Dimension(100, 100));
-        jSplitPane1.setRightComponent(claimPanel);
-        jSplitPane1.setLeftComponent(singleCustomerPanel1);
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel1.add(singleCustomerPanel1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel1.add(singleClaimPanel1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel1.add(singleVehiclePanel1, gridBagConstraints);
+
+        jScrollPane1.setViewportView(jPanel1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        getContentPane().add(jSplitPane1, gridBagConstraints);
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        vehiclePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        vehiclePanel.setMinimumSize(new java.awt.Dimension(100, 100));
-        vehiclePanel.setPreferredSize(new java.awt.Dimension(15, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(vehiclePanel, gridBagConstraints);
+        jButton1.setText("jButton1");
+        getContentPane().add(jButton1, new java.awt.GridBagConstraints());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -107,9 +125,12 @@ public class ClaimFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel claimPanel;
-    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private com.automo.SingleClaimPanel singleClaimPanel1;
     private com.automo.SingleCustomerPanel singleCustomerPanel1;
-    private javax.swing.JPanel vehiclePanel;
+    private com.automo.SingleVehiclePanel singleVehiclePanel1;
     // End of variables declaration//GEN-END:variables
 }

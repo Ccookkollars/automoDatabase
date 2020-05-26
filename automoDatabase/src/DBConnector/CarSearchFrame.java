@@ -168,8 +168,6 @@ public class CarSearchFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             SingleVehicleView svv = new SingleVehicleView(vehicle);
             svv.setVisible(true);
-            MasterFrame.getInstance().addTab(svv);
-            MasterFrame.getInstance().setSize(300, 300);
            
         });
     }//GEN-LAST:event_resultsTableMouseClicked

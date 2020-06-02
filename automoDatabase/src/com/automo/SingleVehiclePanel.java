@@ -22,7 +22,6 @@ public class SingleVehiclePanel extends SingleEntityPanel<Vehicle>{
 
     @Override
     Set<String> getFieldNames() {
-        return Sets.newHashSet("vin", "make", "model", "ABZZZC", "color");
+        return Sets.newHashSet("vin", "make", "model", "goAway", "color");
     }
-    
 }

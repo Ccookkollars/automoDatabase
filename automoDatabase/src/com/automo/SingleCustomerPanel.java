@@ -5,8 +5,7 @@
  */
 package com.automo;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**
@@ -20,6 +19,6 @@ public class SingleCustomerPanel extends SingleEntityPanel<Customer> {
     }
     @Override
     public Set<String> getFieldNames() {
-        return new HashSet<>(Arrays.asList("fieldName1", "fieldTwoName"));
+        return Sets.newHashSet("fieldName1", "fieldTwoName");
     }
 }

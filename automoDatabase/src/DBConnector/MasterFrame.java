@@ -26,6 +26,7 @@ public class MasterFrame extends javax.swing.JFrame {
     private MasterFrame() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//            UIManager.setLookAndFeel( "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

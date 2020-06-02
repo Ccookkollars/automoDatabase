@@ -7,12 +7,13 @@ package com.automo;
 
 import java.awt.GridBagConstraints;
 import java.awt.Label;
-import java.awt.Panel;
 import java.awt.TextField;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,7 +24,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     private final String panelTitle = getPanelTitle();
     private E entity;
 
-    Map<String, Label> labels = new HashMap<>();
+    Map<String, JLabel> labels = new HashMap<>();
     Map<String, TextField> textFields = new HashMap<>();
     /**
      * Creates new form SingleClaimPanel
@@ -47,7 +48,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
         
         titleLabel = new javax.swing.JLabel();
-        fieldGridPanel = new java.awt.Panel();
+        fieldGridPanel = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         setLayout(new java.awt.GridBagLayout());
@@ -56,7 +57,9 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         add(titleLabel, new java.awt.GridBagConstraints());
 
         fieldGridPanel.setLayout(new java.awt.GridBagLayout());
-
+        fieldGridPanel.setBackground(new java.awt.Color(1, 1, 1));
+        fieldGridPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+       
         initFields(fieldGridPanel);
         
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -66,14 +69,18 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         
     }
 
-    private void initFields(Panel panel) {
+    private void initFields(JPanel panel) {
         int row = 0;
         for (String fieldName : getFieldNames()) {
-            Label label = new Label();
+            JLabel label = new JLabel();
             label.setText(fieldName);
+            label.setOpaque(true);
             GridBagConstraints labelGridConstraints = new java.awt.GridBagConstraints();
             labelGridConstraints.gridx = 0;
             labelGridConstraints.gridy = row;
+            labelGridConstraints.fill = java.awt.GridBagConstraints.BOTH;
+
+            labelGridConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
             panel.add(label, labelGridConstraints);
             labels.put(fieldName, label);
             
@@ -83,7 +90,9 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
             GridBagConstraints textFieldGridConstraints = new java.awt.GridBagConstraints();
             textFieldGridConstraints.gridx = 1;
             textFieldGridConstraints.gridy = row;
-            textFieldGridConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+            textFieldGridConstraints.fill = java.awt.GridBagConstraints.BOTH;
+            textFieldGridConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
+
             panel.add(textField, textFieldGridConstraints);
             
             textField.addActionListener(actionEvent
@@ -96,6 +105,6 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
 
     // Variables declaration - modify away!                     
     private javax.swing.JLabel titleLabel;
-    private java.awt.Panel fieldGridPanel;
+    private javax.swing.JPanel fieldGridPanel;
     // End of variables declaration                   
 }

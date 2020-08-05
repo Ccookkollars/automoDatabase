@@ -5,6 +5,9 @@
  */
 package DBConnector;
 
+import com.automo.ClaimDao;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -17,6 +20,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MasterFrame extends javax.swing.JFrame {
 
     private static final MasterFrame instance = new MasterFrame();
+    ClaimDao claimDao;
     public static MasterFrame getInstance() {
         return instance;
     }
@@ -31,6 +35,7 @@ public class MasterFrame extends javax.swing.JFrame {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        claimDao = new ClaimDao();
         claimFrame = new ClaimFrame();
         setTitle("MasterFrame");
         setVisible(true);
@@ -52,10 +57,10 @@ public class MasterFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         claimFrameButton = new java.awt.Button();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        customerNameBox = new javax.swing.JTextField();
+        vehicleYearBox = new javax.swing.JTextField();
+        vehicleMakeBox = new javax.swing.JTextField();
+        vehicleModelBox = new javax.swing.JTextField();
         button2 = new java.awt.Button();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -64,7 +69,7 @@ public class MasterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setText("Vehicle Make");
@@ -103,29 +108,29 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel3.add(claimFrameButton, gridBagConstraints);
 
-        jTextField1.setText("jTextField1");
+        customerNameBox.setText("jTextField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        jPanel3.add(jTextField1, gridBagConstraints);
+        jPanel3.add(customerNameBox, gridBagConstraints);
 
-        jTextField2.setText("jTextField2");
+        vehicleYearBox.setText("jTextField2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        jPanel3.add(jTextField2, gridBagConstraints);
+        jPanel3.add(vehicleYearBox, gridBagConstraints);
 
-        jTextField3.setText("jTextField3");
+        vehicleMakeBox.setText("jTextField3");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        jPanel3.add(jTextField3, gridBagConstraints);
+        jPanel3.add(vehicleMakeBox, gridBagConstraints);
 
-        jTextField4.setText("jTextField4");
+        vehicleModelBox.setText("jTextField4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        jPanel3.add(jTextField4, gridBagConstraints);
+        jPanel3.add(vehicleModelBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -139,7 +144,6 @@ public class MasterFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(button2, new java.awt.GridBagConstraints());
-        button2.getAccessibleContext().setAccessibleName("Show Vehicles");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -153,7 +157,13 @@ public class MasterFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void claimFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimFrameButtonActionPerformed
-        claimFrame.setVisible(true);
+        try{
+            int[] ids = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
+            Logger.getLogger(MasterFrame.class.getName()).log(Level.INFO, Arrays.toString(ids));
+            claimFrame.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_claimFrameButtonActionPerformed
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
@@ -201,6 +211,7 @@ public class MasterFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button2;
     private java.awt.Button claimFrameButton;
+    private javax.swing.JTextField customerNameBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -209,9 +220,8 @@ public class MasterFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField vehicleMakeBox;
+    private javax.swing.JTextField vehicleModelBox;
+    private javax.swing.JTextField vehicleYearBox;
     // End of variables declaration//GEN-END:variables
 }

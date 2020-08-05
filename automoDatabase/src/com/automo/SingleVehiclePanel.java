@@ -5,13 +5,12 @@
  */
 package com.automo;
 
-import DBConnector.Vehicle;
+import com.automo.entity.Vehicle;
 import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**
  *
- * @author caleb
  */
 public class SingleVehiclePanel extends SingleEntityPanel<Vehicle>{
 

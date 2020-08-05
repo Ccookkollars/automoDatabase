@@ -5,6 +5,7 @@
  */
 package com.automo;
 
+import com.automo.entity.Customer;
 import com.google.common.collect.Sets;
 import java.util.Set;
 

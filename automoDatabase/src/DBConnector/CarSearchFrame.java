@@ -1,5 +1,6 @@
 package DBConnector;
 
+import com.automo.entity.Vehicle;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 

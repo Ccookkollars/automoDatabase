@@ -5,6 +5,8 @@
  */
 package DBConnector;
 
+import com.automo.entity.Vehicle;
+
 /**
  *
  * @author caleb

@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.automo;
+package com.automo.dao;
 
-import DBConnector.DBConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,13 +12,8 @@ import java.sql.Statement;
 /**
  *
  */
-public class ClaimDao {
+public class ClaimDao extends BasicDataAccessObject {
 
-    private final DBConnector connection;
-
-    public ClaimDao() {
-        connection = new DBConnector();
-    }
     public int[] findClaim(String firstName, String vehicleYear, String vehicleMake, String vehicleModel) throws SQLException {
         String queryString = "select\n"
                 + "	cl.id as claim_id, ve.id as vehicle_id, cu.id as customer_id\n"

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DBConnector;
+package com.automo.dao;
 
 import com.automo.entity.Vehicle;
 
@@ -11,14 +11,13 @@ import com.automo.entity.Vehicle;
  *
  * @author in communist project no authors
  */
-public class VehicleDao {
+public class VehicleDao extends BasicDataAccessObject{
 
-    DBQuery dbq = new DBQuery();
     public void createVehicle(Vehicle vehicle) {
         throw new UnsupportedOperationException("Didn't do");
     }
     public Vehicle getVehicle(String vin) {
-        return dbq.getVehicleByVin(vin);
+        throw new UnsupportedOperationException("Didn't do");
     }
     public void updateVehicle(Vehicle vehicle) {
         throw new UnsupportedOperationException("Didn't do");

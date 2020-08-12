@@ -1,4 +1,4 @@
-package DBConnector;
+package com.automo.dao;
 
 import com.automo.entity.Vehicle;
 import java.sql.ResultSet;
@@ -8,14 +8,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DBQuery {
+public class DBQuery extends BasicDataAccessObject {
 
     private static final Logger LOG = Logger.getLogger("DBQuery");
-    private DBConnector connection;
-
-    public DBQuery() {
-        connection = new DBConnector();
-    }
 
     public String[] makeModelYearVin() {
 
@@ -45,7 +40,7 @@ public class DBQuery {
     }
 
     public Vehicle getVehicleByVin(String vin) {
-        
+
         List<String> resultsList = new ArrayList<>();
         try {
 
@@ -60,7 +55,7 @@ public class DBQuery {
                         rs.getString("model"),
                         rs.getString("plate"),
                         rs.getString("color"));
-               return vehicle; 
+                return vehicle;
             }
 
         } catch (Exception e) {

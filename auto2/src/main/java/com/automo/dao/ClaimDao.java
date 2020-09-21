@@ -14,13 +14,17 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  */
 public class ClaimDao extends BaseEntityDataAccessObject {
 
+    private static final Logger LOG = LogManager.getLogger(ClaimDao.class);
     public int[] findClaim(String firstName, String vehicleYear, String vehicleMake, String vehicleModel) throws SQLException {
+        Integer.parseInt(vehicleYear);
         String queryString = "select\n"
                 + "	cl.id as claim_id, ve.id as vehicle_id, cu.id as customer_id\n"
                 + "from\n"
@@ -39,6 +43,7 @@ public class ClaimDao extends BaseEntityDataAccessObject {
         
         Statement stmt = connection.getConnection().createStatement();
 
+        LOG.info("running query:" + queryString);
         ResultSet rs;
         rs = stmt.executeQuery(queryString);
         int[] result = null;

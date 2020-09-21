@@ -20,7 +20,7 @@ public class DBQuery extends BasicDataAccessObject {
             Statement stmt = connection.getConnection().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT * FROM car");
+            rs = stmt.executeQuery("SELECT * FROM CAR");
 
             while (rs.next()) {
                 resultsList.add(rs.getString("make"));
@@ -47,7 +47,7 @@ public class DBQuery extends BasicDataAccessObject {
             Statement stmt = connection.getConnection().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT * FROM car WHERE vin = '" + vin + "'");
+            rs = stmt.executeQuery("SELECT * FROM CAR WHERE vin = '" + vin + "'");
 
             if (rs.next()) {
                 Vehicle vehicle = new Vehicle();

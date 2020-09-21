@@ -54,9 +54,6 @@
         </Component>
         <Component class="java.awt.TextField" name="textField3">
           <Properties>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[40, 20]"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="ABZZZC"/>
           </Properties>
           <Constraints>

@@ -50,11 +50,12 @@ public class DBQuery extends BasicDataAccessObject {
             rs = stmt.executeQuery("SELECT * FROM car WHERE vin = '" + vin + "'");
 
             if (rs.next()) {
-                Vehicle vehicle = new Vehicle(rs.getString("vin"),
-                        rs.getString("make"),
-                        rs.getString("model"),
-                        rs.getString("plate"),
-                        rs.getString("color"));
+                Vehicle vehicle = new Vehicle();
+                vehicle.setVin(rs.getString("vin"));
+                vehicle.setMake(rs.getString("make"));
+                vehicle.setModel(rs.getString("model"));
+                vehicle.setPlate(rs.getString("plate"));
+                vehicle.setColor(rs.getString("color"));
                 return vehicle;
             }
 

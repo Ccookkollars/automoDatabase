@@ -5,10 +5,13 @@
  */
 package com.automo.dao;
 
+import com.automo.entity.Claim;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +29,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  */
 @ExtendWith(ClaimDaoIT.TestMod.class)
 public class ClaimDaoIT {
+
+    private static final Logger LOG = LogManager.getLogger(ClaimDaoIT.class);
 
     private static ClaimDao instance;
 
@@ -55,10 +60,10 @@ public class ClaimDaoIT {
     @Test
     public void testFindClaim() throws Exception {
         String firstName = "Lizeth";
-        String vehicleYear = "2013";
+        String vehicleYear = "2011";
         String vehicleMake = "honda";
         String vehicleModel = "accord";
-        int[] expResult = new int[]{1, 1, 3};
+        int[] expResult = new int[]{3, 1, 1};
         int[] result = instance.findClaim(firstName, vehicleYear, vehicleMake, vehicleModel);
         assertArrayEquals(expResult, result);
     }
@@ -67,31 +72,49 @@ public class ClaimDaoIT {
      * Test of findClaim method, of class ClaimDao.
      */
     @Test
-    public void testFindClaim_garbage() {
+    public void testFindClaim_garbage() throws Exception {
         Random rand = new Random(1l);
         String firstName = UUID.randomUUID().toString();
         String vehicleYear = rand.nextInt(99999) + "";
         String vehicleMake = UUID.randomUUID().toString();
         String vehicleModel = UUID.randomUUID().toString();
-        assertThrows(RuntimeException.class, ()
-                -> instance.findClaim(firstName, vehicleYear, vehicleMake, vehicleModel));
+        assert(null == instance.findClaim(firstName, vehicleYear, vehicleMake, vehicleModel));
     }
 
+    /**
+     * Test of findClaim method, of class ClaimDao.
+     */
+    @Test
+    public void testFindClaim_1() {
+        Claim claim = instance.findById(3);
+        assert(claim != null);
+    }
+
+    /**
+     * Test of findClaim method, of class ClaimDao.
+     */
+    @Test
+    public void testFindClaims_() {
+        List<Claim> claims = instance.findAllClaims();
+        assert(!claims.isEmpty());
+        LOG.info(String.join(":", Lists.transform(claims, Claim::toString)));
+    }
+    
     public static class TestMod implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
-        private static final Logger LOG = Logger.getLogger(TestMod.class.getSimpleName());
+        private static final Logger LOG = LogManager.getLogger(TestMod.class);
 
         final String flatString = "____________";
 
         @Override
         public void beforeTestExecution(ExtensionContext context) throws Exception {
-            context.getTestMethod().ifPresent(m -> LOG.log(Level.INFO, flatString + "{}" + flatString, m.getName()));
+            context.getTestMethod().ifPresent(m -> LOG.info(flatString + "{}" + flatString, m.getName()));
         }
 
         @Override
         public void afterTestExecution(ExtensionContext context) throws Exception {
             LOG.info(" " + flatString);
         }
-
     }
+
 }

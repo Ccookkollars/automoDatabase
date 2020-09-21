@@ -5,25 +5,31 @@
  */
 package com.automo.dao;
 
+import com.automo.entity.Claim;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
  */
-public class ClaimDao extends BasicDataAccessObject {
+public class ClaimDao extends BaseEntityDataAccessObject {
 
     public int[] findClaim(String firstName, String vehicleYear, String vehicleMake, String vehicleModel) throws SQLException {
         String queryString = "select\n"
                 + "	cl.id as claim_id, ve.id as vehicle_id, cu.id as customer_id\n"
                 + "from\n"
-                + "	customer cu\n"
-                + "inner join contact cu_contact on\n"
+                + "	CUSTOMER cu\n"
+                + "inner join CONTACT cu_contact on\n"
                 + "	cu.contact_id = cu_contact.id\n"
-                + "inner join claim cl on\n"
+                + "inner join CLAIM cl on\n"
                 + "	cl.customer_id = cu.id\n"
-                + "inner join vehicle ve on\n"
+                + "inner join VEHICLE ve on\n"
                 + "	cl.vehicle_id = ve.id\n"
                 + "where\n"
                 + "	cu_contact.first_name like '%" + firstName + "%'\n"
@@ -41,5 +47,22 @@ public class ClaimDao extends BasicDataAccessObject {
         }
         return result;
     }
+    
+    public List<Claim> findAllClaims() {
+        TypedQuery<Claim> query = em.createNamedQuery("Claim.findAll", Claim.class);
+        return query.getResultList();
+    }
+    public List<Claim> findAll() {
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Claim> cq = cb.createQuery(Claim.class);
+        Root<Claim> rootEntry = cq.from(Claim.class);
+        CriteriaQuery<Claim> all = cq.select(rootEntry);
+        TypedQuery<Claim> allQuery = em.createQuery(all);
+        return allQuery.getResultList();
+    }
 
+    public Claim findById(int id) {
+        return em.find(Claim.class, id);
+    }
 }

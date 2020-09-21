@@ -30,9 +30,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
-    @NamedQuery(name = "Customer.findById", query = "SELECT c FROM Customer c WHERE c.id = :id")})
-public class Customer implements Serializable {
+    @NamedQuery(name = "Payor.findAll", query = "SELECT p FROM Payor p"),
+    @NamedQuery(name = "Payor.findById", query = "SELECT p FROM Payor p WHERE p.id = :id"),
+    @NamedQuery(name = "Payor.findByCompanyName", query = "SELECT p FROM Payor p WHERE p.companyName = :companyName"),
+    @NamedQuery(name = "Payor.findByFederalId", query = "SELECT p FROM Payor p WHERE p.federalId = :federalId")})
+public class Payor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,22 +42,29 @@ public class Customer implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Claim> claimCollection;
-    @JoinColumn(name = "primary_vehicle_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Vehicle primaryVehicleId;
+    @Basic(optional = false)
+    @Column(name = "company_name", nullable = false, length = 100)
+    private String companyName;
+    @Basic(optional = false)
+    @Column(name = "federal_id", nullable = false)
+    private int federalId;
     @JoinColumn(name = "contact_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Contact contactId;
-    @OneToMany(mappedBy = "primaryCustomerId")
-    private Collection<Vehicle> vehicleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "payorId")
+    private Collection<Claim> claimCollection;
 
-    public Customer() {
+    public Payor() {
     }
 
-    public Customer(Integer id) {
+    public Payor(Integer id) {
         this.id = id;
+    }
+
+    public Payor(Integer id, String companyName, int federalId) {
+        this.id = id;
+        this.companyName = companyName;
+        this.federalId = federalId;
     }
 
     public Integer getId() {
@@ -66,21 +75,20 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    @XmlTransient
-    public Collection<Claim> getClaimCollection() {
-        return claimCollection;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setClaimCollection(Collection<Claim> claimCollection) {
-        this.claimCollection = claimCollection;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public Vehicle getPrimaryVehicleId() {
-        return primaryVehicleId;
+    public int getFederalId() {
+        return federalId;
     }
 
-    public void setPrimaryVehicleId(Vehicle primaryVehicleId) {
-        this.primaryVehicleId = primaryVehicleId;
+    public void setFederalId(int federalId) {
+        this.federalId = federalId;
     }
 
     public Contact getContactId() {
@@ -92,12 +100,12 @@ public class Customer implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Vehicle> getVehicleCollection() {
-        return vehicleCollection;
+    public Collection<Claim> getClaimCollection() {
+        return claimCollection;
     }
 
-    public void setVehicleCollection(Collection<Vehicle> vehicleCollection) {
-        this.vehicleCollection = vehicleCollection;
+    public void setClaimCollection(Collection<Claim> claimCollection) {
+        this.claimCollection = claimCollection;
     }
 
     @Override
@@ -110,10 +118,10 @@ public class Customer implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Customer)) {
+        if (!(object instanceof Payor)) {
             return false;
         }
-        Customer other = (Customer) object;
+        Payor other = (Payor) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -122,7 +130,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "com.automo.entity.Customer[ id=" + id + " ]";
+        return "com.automo.entity.Payor[ id=" + id + " ]";
     }
 
 }

@@ -39,10 +39,11 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     E getEntity() {
         return entity;
     }
-    void setEntity(E entity) {
+    public void setEntity(E entity) {
         this.entity = entity;
     }
-    
+
+ 
     @SuppressWarnings("unchecked")
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;

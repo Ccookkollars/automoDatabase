@@ -6,8 +6,8 @@
 package DBConnector;
 
 import com.automo.dao.ClaimDao;
+import com.automo.entity.Customer;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -15,7 +15,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author caleb
  */
 public class MasterFrame extends javax.swing.JFrame {
 
@@ -69,7 +68,7 @@ public class MasterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setText("Vehicle Make");
@@ -108,25 +107,37 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel3.add(claimFrameButton, gridBagConstraints);
 
-        customerNameBox.setText("jTextField1");
+        customerNameBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        customerNameBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerNameBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         jPanel3.add(customerNameBox, gridBagConstraints);
 
-        vehicleYearBox.setText("jTextField2");
+        vehicleYearBox.setMinimumSize(new java.awt.Dimension(1100, 27));
+        vehicleYearBox.setPreferredSize(new java.awt.Dimension(65, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
         jPanel3.add(vehicleYearBox, gridBagConstraints);
 
-        vehicleMakeBox.setText("jTextField3");
+        vehicleMakeBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        vehicleMakeBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vehicleMakeBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         jPanel3.add(vehicleMakeBox, gridBagConstraints);
 
-        vehicleModelBox.setText("jTextField4");
+        vehicleModelBox.setPreferredSize(new java.awt.Dimension(65, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -158,8 +169,8 @@ public class MasterFrame extends javax.swing.JFrame {
 
     private void claimFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimFrameButtonActionPerformed
         try{
-            int[] ids = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
-            Logger.getLogger(MasterFrame.class.getName()).log(Level.INFO, Arrays.toString(ids));
+            Object[] result = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
+            claimFrame.setCustomer((Customer) result[2]);
             claimFrame.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,6 +182,14 @@ public class MasterFrame extends javax.swing.JFrame {
         CarSearchFrame vehicles = new CarSearchFrame();
         vehicles.setTitle("Getting There");
         vehicles.setVisible(true);    }//GEN-LAST:event_button2ActionPerformed
+
+    private void customerNameBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerNameBoxActionPerformed
+
+    private void vehicleMakeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicleMakeBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_vehicleMakeBoxActionPerformed
 
     /**
      * @param args the command line arguments

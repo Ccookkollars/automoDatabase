@@ -23,34 +23,24 @@ import org.apache.logging.log4j.Logger;
 public class ClaimDao extends BaseEntityDataAccessObject {
 
     private static final Logger LOG = LogManager.getLogger(ClaimDao.class);
-    public int[] findClaim(String firstName, String vehicleYear, String vehicleMake, String vehicleModel) throws SQLException {
-        Integer.parseInt(vehicleYear);
-        String queryString = "select\n"
-                + "	cl.id as claim_id, ve.id as vehicle_id, cu.id as customer_id\n"
-                + "from\n"
-                + "	CUSTOMER cu\n"
-                + "inner join CONTACT cu_contact on\n"
-                + "	cu.contact_id = cu_contact.id\n"
-                + "inner join CLAIM cl on\n"
-                + "	cl.customer_id = cu.id\n"
-                + "inner join VEHICLE ve on\n"
-                + "	cl.vehicle_id = ve.id\n"
-                + "where\n"
-                + "	cu_contact.first_name like '%" + firstName + "%'\n"
-                + "	and ve.make = '" + vehicleMake + "'\n"
-                + "	and ve.model = '" + vehicleModel + "'\n"
-                + "	and ve.year_manufactured = " + vehicleYear + ";";
+    public Object[] findClaim(String firstName, String vehicleYear, String vehicleMake, String vehicleModel) throws SQLException {
         
-        Statement stmt = connection.getConnection().createStatement();
+        TypedQuery<Object[]> query = em.createQuery(
+            "SELECT cl, ve, cu, ct FROM Claim cl "
+                    + "JOIN cl.customerId cu\n"
+                    + "JOIN cu.contactId ct\n"
+                    + "JOIN cl.vehicleId ve\n"
+                    + "WHERE ct.firstName like :firstName\n"
+                    + "AND ve.make = :vehicleMake\n"
+                    + "AND ve.model = :vehicleModel\n"
+                    + "AND ve.yearManufactured = :vehicleYear", Object[].class);
 
-        LOG.info("running query:" + queryString);
-        ResultSet rs;
-        rs = stmt.executeQuery(queryString);
-        int[] result = null;
-        if (rs.next()){
-            result = new int[]{rs.getInt("claim_id"), rs.getInt("vehicle_id"), rs.getInt("customer_id")};
-        }
-        return result;
+        query.setParameter("firstName", "%"+firstName+"%");
+        query.setParameter("vehicleMake", vehicleMake);
+        query.setParameter("vehicleModel", vehicleModel);
+        query.setParameter("vehicleYear", Integer.parseInt(vehicleYear));
+        LOG.info("JPQL query:" + query.toString());
+        return query.getSingleResult();
     }
     
     public List<Claim> findAllClaims() {

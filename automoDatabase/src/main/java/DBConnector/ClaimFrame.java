@@ -5,6 +5,7 @@
  */
 package DBConnector;
 
+import com.automo.entity.Customer;
 import java.util.logging.Logger;
 
 /**
@@ -123,6 +124,16 @@ public class ClaimFrame extends javax.swing.JFrame {
             }
         });
     }
+   
+    public void setCustomer(Customer c){
+        singleCustomerPanel1.setEntity(c);
+    }
+//    public void setClaim(Claim c){
+//        singleClaimPanel1.setEntity(c);
+//    }
+//    public void setVehicle(Vehicle v){
+//        singleClaimPanel1.setEntity(v);
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

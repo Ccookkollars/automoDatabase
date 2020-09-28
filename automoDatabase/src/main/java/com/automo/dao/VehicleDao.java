@@ -11,19 +11,15 @@ import com.automo.entity.Vehicle;
  *
  * @author in communist project no authors
  */
-public class VehicleDao extends BasicDataAccessObject{
+public class VehicleDao extends BaseEntityDataAccessObject {
 
-    public void createVehicle(Vehicle vehicle) {
-        throw new UnsupportedOperationException("Didn't do");
+    public Vehicle getByVin(String vin) {
+        return em.createNamedQuery("Vehicle.findByVin", Vehicle.class).getSingleResult();
     }
-    public Vehicle getVehicle(String vin) {
-        throw new UnsupportedOperationException("Didn't do");
+
+    @Override
+    Class getTypeToken() {
+        return Vehicle.class;
     }
-    public void updateVehicle(Vehicle vehicle) {
-        throw new UnsupportedOperationException("Didn't do");
-    }
-    public void deleteVehicle(Vehicle vehicle) {
-        throw new UnsupportedOperationException("Didn't do");
-    }
+    
 }
-

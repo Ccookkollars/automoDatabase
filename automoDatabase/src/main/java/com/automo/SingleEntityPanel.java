@@ -5,6 +5,7 @@
  */
 package com.automo;
 
+import com.automo.dao.BasicDataAccessObject;
 import java.awt.GridBagConstraints;
 import java.awt.TextField;
 import java.lang.reflect.Field;
@@ -12,8 +13,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Data;
@@ -28,7 +31,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     private static final Logger LOG = LogManager.getLogger(SingleEntityPanel.class);
     private final String panelTitle = getPanelTitle();
     Class<E> typeToken = getTypeToken();
-    E entity;
+    E entity = null;
 
     List<InterestingField> interestingFields = new ArrayList<>();
 
@@ -43,6 +46,8 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
 
     abstract String getPanelTitle();
 
+    abstract void create(E e);
+    abstract void update(E e);
     abstract Class<E> getTypeToken();
 
     public E getEntity() {
@@ -56,7 +61,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        java.awt.GridBagConstraints howToGridBro;
 
         titleLabel = new javax.swing.JLabel();
         fieldGridPanel = new javax.swing.JPanel();
@@ -73,10 +78,42 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
 
         initFieldComponents(fieldGridPanel);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        add(fieldGridPanel, gridBagConstraints);
+        howToGridBro = new java.awt.GridBagConstraints();
+        howToGridBro.gridx = 0;
+        howToGridBro.gridy = 2;
+        add(fieldGridPanel, howToGridBro);
+        
+        buttonPanel = new javax.swing.JPanel();
+        reloadButton = new JButton();
+        reloadButton.setText("Reload");
+        howToGridBro = new java.awt.GridBagConstraints();
+        howToGridBro.gridx = 2;
+        howToGridBro.gridy = 2;
+        buttonPanel.add(reloadButton, howToGridBro);
+
+        deleteButton = new JButton();
+        deleteButton.setText("Delete entry");
+        howToGridBro = new java.awt.GridBagConstraints();
+        howToGridBro.gridx = 1;
+        howToGridBro.gridy = 2;
+        buttonPanel.add(deleteButton, howToGridBro);
+
+        saveButton = new JButton();
+        saveButton.setText("Save");
+        howToGridBro = new java.awt.GridBagConstraints();
+        howToGridBro.gridx = 0;
+        howToGridBro.gridy = 2;
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onSave();
+            }
+        });
+        buttonPanel.add(saveButton, howToGridBro);
+        
+        howToGridBro = new java.awt.GridBagConstraints();
+        howToGridBro.gridx = 0;
+        howToGridBro.gridy = 3;
+        add(buttonPanel, howToGridBro);
     }
 
     private void initFieldComponents(JPanel panel) {
@@ -108,6 +145,42 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
             textField.addActionListener(actionEvent
                     -> LOG.info("Action performed on textField " + fieldName));
             row++;
+        }
+    }
+
+    void onSave() {
+
+        LOG.info("ONSAVE");
+        boolean anythingChanged = false;
+        boolean isNew = false;
+        if (entity == null) {
+            try {
+                entity = typeToken.getConstructor().newInstance();
+                anythingChanged = true;
+                isNew = true;
+            } catch (Exception e){
+                LOG.error("Could not initialize entity for new item", e);
+                throw new RuntimeException(e);
+            }
+        }
+        for (InterestingField i : interestingFields) {
+            try{
+                if (!Objects.equals(i.getGetter().invoke(entity).toString(), i.getTextField().getText())){
+                    LOG.info("Detected changed value for field " + i.getDisplayName());
+                    anythingChanged = true;
+                    i.getSetter().invoke(entity, i.getTextField().getText());
+                }
+            } catch (Exception e) {
+                LOG.error("Could not save value " + i.getTextField() +" for " + typeToken.getSimpleName());
+                throw new RuntimeException(e);
+            }
+        }
+        if (anythingChanged) {
+            if (isNew){
+                create(entity);
+            } else {
+                update(entity);
+            }
         }
     }
 
@@ -171,4 +244,8 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
 
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel fieldGridPanel;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton reloadButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JPanel buttonPanel;
 }

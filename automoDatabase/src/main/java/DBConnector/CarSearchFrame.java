@@ -171,7 +171,7 @@ public class CarSearchFrame extends javax.swing.JFrame {
     private void resultsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultsTableMouseClicked
         resultsTable.getSelectedRow();
         String vin = (String) resultsTable.getValueAt(resultsTable.getSelectedRow(), VIN_COLUMN);
-        Vehicle vehicle = vehicleDao.getVehicle(vin);
+        Vehicle vehicle = vehicleDao.getByVin(vin);
         LOG.info(vehicle.toString());
         java.awt.EventQueue.invokeLater(() -> {
             SingleVehicleView svv = new SingleVehicleView(vehicle);

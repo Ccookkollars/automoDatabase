@@ -6,6 +6,7 @@
 package com.automo.dao;
 
 import DBConnector.DBConnector;
+import com.automo.entity.Vehicle;
 
 /**
  *

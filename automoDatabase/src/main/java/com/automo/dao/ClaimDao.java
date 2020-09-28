@@ -43,21 +43,12 @@ public class ClaimDao extends BaseEntityDataAccessObject {
         return query.getSingleResult();
     }
     
-    public List<Claim> findAllClaims() {
-        TypedQuery<Claim> query = em.createNamedQuery("Claim.findAll", Claim.class);
-        return query.getResultList();
-    }
-    public List<Claim> findAll() {
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Claim> cq = cb.createQuery(Claim.class);
-        Root<Claim> rootEntry = cq.from(Claim.class);
-        CriteriaQuery<Claim> all = cq.select(rootEntry);
-        TypedQuery<Claim> allQuery = em.createQuery(all);
-        return allQuery.getResultList();
-    }
-
     public Claim findById(int id) {
         return em.find(Claim.class, id);
+    }
+
+    @Override
+    Class<Claim> getTypeToken() {
+        return Claim.class;
     }
 }

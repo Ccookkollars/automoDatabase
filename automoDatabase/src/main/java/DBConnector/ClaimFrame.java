@@ -5,7 +5,8 @@
  */
 package DBConnector;
 
-import com.automo.entity.Customer;
+import com.automo.entity.Contact;
+import com.automo.entity.Vehicle;
 import java.util.logging.Logger;
 
 /**
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
  * @author caleb
  */
 public class ClaimFrame extends javax.swing.JFrame {
+
     private static final Logger LOG = Logger.getLogger(ClaimFrame.class.getName());
 
     /**
@@ -35,7 +37,7 @@ public class ClaimFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        singleCustomerPanel1 = new com.automo.SingleCustomerPanel();
+        singleCustomerPanel1 = new com.automo.SingleContactPanel();
         singleClaimPanel1 = new com.automo.SingleClaimPanel();
         singleVehiclePanel1 = new com.automo.SingleVehiclePanel();
         jButton1 = new javax.swing.JButton();
@@ -124,16 +126,17 @@ public class ClaimFrame extends javax.swing.JFrame {
             }
         });
     }
-   
-    public void setCustomer(Customer c){
+
+    public void setContact(Contact c) {
         singleCustomerPanel1.setEntity(c);
     }
 //    public void setClaim(Claim c){
 //        singleClaimPanel1.setEntity(c);
 //    }
-//    public void setVehicle(Vehicle v){
-//        singleClaimPanel1.setEntity(v);
-//    }
+
+    public void setVehicle(Vehicle v) {
+        singleVehiclePanel1.setEntity(v);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -141,7 +144,7 @@ public class ClaimFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private com.automo.SingleClaimPanel singleClaimPanel1;
-    private com.automo.SingleCustomerPanel singleCustomerPanel1;
+    private com.automo.SingleContactPanel singleCustomerPanel1;
     private com.automo.SingleVehiclePanel singleVehiclePanel1;
     // End of variables declaration//GEN-END:variables
 }

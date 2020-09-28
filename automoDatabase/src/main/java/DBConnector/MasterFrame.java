@@ -6,7 +6,8 @@
 package DBConnector;
 
 import com.automo.dao.ClaimDao;
-import com.automo.entity.Customer;
+import com.automo.entity.Contact;
+import com.automo.entity.Vehicle;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,6 +108,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel3.add(claimFrameButton, gridBagConstraints);
 
+        customerNameBox.setText("Lizeth");
         customerNameBox.setPreferredSize(new java.awt.Dimension(65, 27));
         customerNameBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +120,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         jPanel3.add(customerNameBox, gridBagConstraints);
 
+        vehicleYearBox.setText("2011");
         vehicleYearBox.setMinimumSize(new java.awt.Dimension(1100, 27));
         vehicleYearBox.setPreferredSize(new java.awt.Dimension(65, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -126,6 +129,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
         jPanel3.add(vehicleYearBox, gridBagConstraints);
 
+        vehicleMakeBox.setText("honda");
         vehicleMakeBox.setPreferredSize(new java.awt.Dimension(65, 27));
         vehicleMakeBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +141,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         jPanel3.add(vehicleMakeBox, gridBagConstraints);
 
+        vehicleModelBox.setText("accord");
         vehicleModelBox.setPreferredSize(new java.awt.Dimension(65, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -170,7 +175,8 @@ public class MasterFrame extends javax.swing.JFrame {
     private void claimFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimFrameButtonActionPerformed
         try{
             Object[] result = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
-            claimFrame.setCustomer((Customer) result[2]);
+            claimFrame.setContact((Contact) result[3]);
+            claimFrame.setVehicle((Vehicle) result[1]);
             claimFrame.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);

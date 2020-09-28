@@ -6,8 +6,6 @@
 package com.automo;
 
 import com.automo.entity.Vehicle;
-import com.google.common.collect.Sets;
-import java.util.Set;
 
 /**
  *
@@ -20,7 +18,9 @@ public class SingleVehiclePanel extends SingleEntityPanel<Vehicle>{
     }
 
     @Override
-    Set<String> getFieldNames() {
-        return Sets.newHashSet("vin", "make", "model", "goAway", "color");
+    Class<Vehicle> getTypeToken() {
+        return Vehicle.class;
     }
+
+  
 }

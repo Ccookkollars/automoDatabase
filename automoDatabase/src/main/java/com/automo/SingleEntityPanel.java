@@ -5,21 +5,14 @@
  */
 package com.automo;
 
-import com.automo.dao.BasicDataAccessObject;
 import java.awt.GridBagConstraints;
 import java.awt.TextField;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.Column;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +32,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
      * Creates new form SingleClaimPanel
      */
     public SingleEntityPanel() {
-        initInterestingFields(typeToken);
+        interestingFields = ApplicationContext.getInstance().getApplicationSettings().getInterestingFieldsFor(typeToken);
         initComponents();
         LOG.info("Initialized singleEntityPanel " + panelTitle);
     }
@@ -184,46 +177,6 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         }
     }
 
-    private void initInterestingFields(Class clazz) {
-        Set<String> set = new HashSet<>();
-        while (clazz != null) {
-            // Search fields for column annotations
-            for (Field field : clazz.getDeclaredFields()) {
-                if (!field.isAnnotationPresent(Column.class)) {
-                    continue;
-                }
-                // Search methods for matching getter name
-                Method getter = getGetter(field.getName(), clazz);
-                Method setter = getSetter(field.getName(), clazz);
-                if (getter != null && setter   != null) {
-                    interestingFields.add(new InterestingField(field.getName(), getter, setter, new TextField()));
-                }
-                
-            }
-            clazz = clazz.getSuperclass();
-        }
-    }
-
-    Method getGetter(String fieldName, Class clazz){
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getName().toLowerCase().contains("get")
-                    && m.getName().toLowerCase().contains(fieldName.toLowerCase())) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-    Method getSetter(String fieldName, Class clazz){
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getName().toLowerCase().contains("set")
-                    && m.getName().toLowerCase().contains(fieldName.toLowerCase())) {
-                return m;
-            }
-        }
-        return null;
-    }
-
     public void initEntityFields(E entity) {
         for (InterestingField i : interestingFields) {
             try {
@@ -234,13 +187,6 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         }
     }
 
-    @Data
-    public static class InterestingField {
-        private final String displayName;
-        private final Method getter;
-        private final Method setter;
-        private final TextField textField;
-    }
 
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel fieldGridPanel;

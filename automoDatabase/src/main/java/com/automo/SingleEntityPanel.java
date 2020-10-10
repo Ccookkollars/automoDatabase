@@ -32,7 +32,12 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
      * Creates new form SingleClaimPanel
      */
     public SingleEntityPanel() {
-        interestingFields = ApplicationContext.getInstance().getApplicationSettings().getInterestingFieldsFor(typeToken);
+        try{
+            interestingFields = ApplicationContext.getInstance().getApplicationSettings().getInterestingFieldsFor(typeToken);
+        } catch (NoClassDefFoundError e) {
+            interestingFields = new ArrayList<>();
+            LOG.error(e);
+        }
         initComponents();
         LOG.info("Initialized singleEntityPanel " + panelTitle);
     }

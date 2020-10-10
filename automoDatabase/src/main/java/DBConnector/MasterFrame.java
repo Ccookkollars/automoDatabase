@@ -5,7 +5,6 @@
  */
 package DBConnector;
 
-import com.automo.ClaimFrame;
 import com.automo.dao.ClaimDao;
 import com.automo.entity.Contact;
 import com.automo.entity.Vehicle;

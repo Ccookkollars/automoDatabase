@@ -6,8 +6,12 @@
 package DBConnector;
 
 import com.automo.ClaimFrame;
+import com.automo.EditVehiclesFrame;
 import com.automo.dao.ClaimDao;
+import com.automo.dao.CustomerDao;
+import com.automo.entity.Claim;
 import com.automo.entity.Contact;
+import com.automo.entity.Customer;
 import com.automo.entity.Vehicle;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,6 +26,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
     private static final MasterFrame instance = new MasterFrame();
     ClaimDao claimDao;
+    CustomerDao customerDao;
     public static MasterFrame getInstance() {
         return instance;
     }
@@ -37,7 +42,9 @@ public class MasterFrame extends javax.swing.JFrame {
         }
         initComponents();
         claimDao = new ClaimDao();
+        customerDao = new CustomerDao();
         claimFrame = new ClaimFrame();
+        editVehiclesFrame = new EditVehiclesFrame();
         setTitle("MasterFrame");
         setVisible(true);
     }
@@ -52,16 +59,20 @@ public class MasterFrame extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         claimFrameButton = new java.awt.Button();
         customerNameBox = new javax.swing.JTextField();
         vehicleYearBox = new javax.swing.JTextField();
         vehicleMakeBox = new javax.swing.JTextField();
         vehicleModelBox = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        editVehicleButton = new java.awt.Button();
+        customerNameBox2 = new javax.swing.JTextField();
         button2 = new java.awt.Button();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -70,32 +81,32 @@ public class MasterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Vehicle Make");
+        jLabel5.setText("Vehicle Make");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        jPanel3.add(jLabel1, gridBagConstraints);
+        jPanel4.add(jLabel5, gridBagConstraints);
 
-        jLabel2.setText("Customer Name");
+        jLabel6.setText("Customer Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        jPanel3.add(jLabel2, gridBagConstraints);
+        jPanel4.add(jLabel6, gridBagConstraints);
 
-        jLabel3.setText("Vehicle Year");
+        jLabel7.setText("Vehicle Year");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        jPanel3.add(jLabel3, gridBagConstraints);
+        jPanel4.add(jLabel7, gridBagConstraints);
 
-        jLabel4.setText("Vehicle Model");
+        jLabel8.setText("Vehicle Model");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        jPanel3.add(jLabel4, gridBagConstraints);
+        jPanel4.add(jLabel8, gridBagConstraints);
 
         claimFrameButton.setLabel("Find Claim");
         claimFrameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +118,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel3.add(claimFrameButton, gridBagConstraints);
+        jPanel4.add(claimFrameButton, gridBagConstraints);
 
         customerNameBox.setText("Lizeth");
         customerNameBox.setPreferredSize(new java.awt.Dimension(65, 27));
@@ -119,7 +130,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        jPanel3.add(customerNameBox, gridBagConstraints);
+        jPanel4.add(customerNameBox, gridBagConstraints);
 
         vehicleYearBox.setText("2011");
         vehicleYearBox.setMinimumSize(new java.awt.Dimension(1100, 27));
@@ -128,7 +139,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-        jPanel3.add(vehicleYearBox, gridBagConstraints);
+        jPanel4.add(vehicleYearBox, gridBagConstraints);
 
         vehicleMakeBox.setText("honda");
         vehicleMakeBox.setPreferredSize(new java.awt.Dimension(65, 27));
@@ -140,17 +151,57 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        jPanel3.add(vehicleMakeBox, gridBagConstraints);
+        jPanel4.add(vehicleMakeBox, gridBagConstraints);
 
         vehicleModelBox.setText("accord");
         vehicleModelBox.setPreferredSize(new java.awt.Dimension(65, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        jPanel3.add(vehicleModelBox, gridBagConstraints);
+        jPanel4.add(vehicleModelBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(jPanel4, gridBagConstraints);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jLabel2.setText("Customer Name");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(jLabel2, gridBagConstraints);
+
+        editVehicleButton.setActionCommand("Find Customer");
+        editVehicleButton.setLabel("Find Customer");
+        editVehicleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editVehicleButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel3.add(editVehicleButton, gridBagConstraints);
+        editVehicleButton.getAccessibleContext().setAccessibleName("Find Customer");
+
+        customerNameBox2.setText("Lizeth");
+        customerNameBox2.setPreferredSize(new java.awt.Dimension(65, 27));
+        customerNameBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerNameBox2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(customerNameBox2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jPanel3, gridBagConstraints);
 
@@ -160,7 +211,10 @@ public class MasterFrame extends javax.swing.JFrame {
                 button2ActionPerformed(evt);
             }
         });
-        getContentPane().add(button2, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(button2, gridBagConstraints);
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -173,10 +227,32 @@ public class MasterFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void editVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editVehicleButtonActionPerformed
+        try{
+            Object[] result = customerDao.findByName(customerNameBox2.getText());
+            editVehiclesFrame.setCustomer((Customer) result[0]);
+            editVehiclesFrame.setVisible(true);
+            editVehiclesFrame.pack();
+        } catch (SQLException ex) {
+            Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_editVehicleButtonActionPerformed
+
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+
+        CarSearchFrame vehicles = new CarSearchFrame();
+        vehicles.setTitle("Getting There");
+        vehicles.setVisible(true);    }//GEN-LAST:event_button2ActionPerformed
+
+    private void customerNameBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerNameBox2ActionPerformed
+
     private void claimFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimFrameButtonActionPerformed
         try{
-            Object[] result = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
+            Object[] result = claimDao.findClaim(customerNameBox2.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
             claimFrame.setContact((Contact) result[3]);
+            claimFrame.setClaim((Claim) result[0]);
             claimFrame.setVehicle((Vehicle) result[1]);
             claimFrame.setVisible(true);
             claimFrame.pack();
@@ -184,12 +260,6 @@ public class MasterFrame extends javax.swing.JFrame {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_claimFrameButtonActionPerformed
-
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-
-        CarSearchFrame vehicles = new CarSearchFrame();
-        vehicles.setTitle("Getting There");
-        vehicles.setVisible(true);    }//GEN-LAST:event_button2ActionPerformed
 
     private void customerNameBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBoxActionPerformed
         // TODO add your handling code here:
@@ -234,19 +304,24 @@ public class MasterFrame extends javax.swing.JFrame {
         });
     }
 
+    private final EditVehiclesFrame editVehiclesFrame;
     private final ClaimFrame claimFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button2;
     private java.awt.Button claimFrameButton;
     private javax.swing.JTextField customerNameBox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField customerNameBox2;
+    private java.awt.Button editVehicleButton;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField vehicleMakeBox;
     private javax.swing.JTextField vehicleModelBox;
     private javax.swing.JTextField vehicleYearBox;

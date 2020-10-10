@@ -10,6 +10,7 @@ import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.PersistenceException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,7 +35,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     public SingleEntityPanel() {
         try{
             interestingFields = ApplicationContext.getInstance().getApplicationSettings().getInterestingFieldsFor(typeToken);
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError | PersistenceException e) {
             interestingFields = new ArrayList<>();
             LOG.error(e);
         }
@@ -163,10 +164,10 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         }
         for (InterestingField i : interestingFields) {
             try{
-                if (!Objects.equals(i.getGetter().invoke(entity).toString(), i.getTextField().getText())){
+                if (!Objects.equals(i.getGetter().apply(entity).toString(), i.getTextField().getText())){
                     LOG.info("Detected changed value for field " + i.getDisplayName());
                     anythingChanged = true;
-                    i.getSetter().invoke(entity, i.getTextField().getText());
+                    i.getSetter().accept(entity, i.getTextField().getText());
                 }
             } catch (Exception e) {
                 LOG.error("Could not save value " + i.getTextField() +" for " + typeToken.getSimpleName());
@@ -185,7 +186,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     public void initEntityFields(E entity) {
         for (InterestingField i : interestingFields) {
             try {
-                i.getTextField().setText(i.getGetter().invoke(entity).toString());
+                i.getTextField().setText(i.getGetter().apply(entity).toString());
             } catch (Exception e) {
                 LOG.warn("Issue setting field " + i.getDisplayName(), e);
             }

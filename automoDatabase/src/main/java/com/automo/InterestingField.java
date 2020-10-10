@@ -7,7 +7,8 @@
 package com.automo;
 
 import java.awt.TextField;
-import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import lombok.Data;
 
 /**
@@ -18,7 +19,7 @@ import lombok.Data;
 public class InterestingField {
 
     private final String displayName;
-    private final Method getter;
-    private final Method setter;
+    private final Function getter;
+    private final BiConsumer setter;
     private final TextField textField;
 }

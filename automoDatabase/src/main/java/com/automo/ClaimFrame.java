@@ -5,6 +5,7 @@
  */
 package com.automo;
 
+import com.automo.entity.Claim;
 import com.automo.entity.Contact;
 import com.automo.entity.Vehicle;
 import java.util.logging.Logger;
@@ -47,7 +48,7 @@ public class ClaimFrame extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Single Claim");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -130,9 +131,10 @@ public class ClaimFrame extends javax.swing.JFrame {
     public void setContact(Contact c) {
         singleCustomerPanel1.setEntity(c);
     }
-//    public void setClaim(Claim c){
-//        singleClaimPanel1.setEntity(c);
-//    }
+    
+    public void setClaim(Claim c){
+        singleClaimPanel1.setEntity(c);
+    }
 
     public void setVehicle(Vehicle v) {
         singleVehiclePanel1.setEntity(v);

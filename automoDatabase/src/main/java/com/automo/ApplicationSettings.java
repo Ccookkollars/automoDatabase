@@ -7,6 +7,7 @@ package com.automo;
 
 import com.automo.entity.Claim;
 import com.automo.entity.Contact;
+import com.automo.entity.Customer;
 import com.automo.entity.Vehicle;
 import java.awt.TextField;
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import javax.persistence.Column;
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +44,7 @@ public class ApplicationSettings {
     */
     private void configureFields(){
 
+        fieldIgnores.put(Customer.class, Arrays.asList("id"));
         fieldIgnores.put(Contact.class, Arrays.asList("id"));
         fieldNames.put(Contact.class, Arrays.asList(
             "firstName",
@@ -112,8 +115,8 @@ public class ApplicationSettings {
                     continue;
                 }
                 // Search methods for matching getter name
-                Method getter = getGetter(field.getName(), clazz);
-                Method setter = getSetter(field.getName(), clazz);
+                Function getter = asFunction(getGetter(field.getName(), clazz));
+                BiConsumer setter = asBiConsumer(getSetter(field.getName(), clazz));
                 if (getter != null && setter   != null) {
                     interestingFields.add(new InterestingField(field.getName(), getter, setter, new TextField()));
                 }
@@ -122,6 +125,32 @@ public class ApplicationSettings {
             clazz = clazz.getSuperclass();
         }
         return new ArrayList<>(interestingFields);
+    }
+    
+    Function asFunction(Method m){
+        return new Function() {
+            @Override
+            public Object apply(Object t) {
+                try{
+                    return m.invoke(t);
+                } catch (ReflectiveOperationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+    }
+    
+    BiConsumer asBiConsumer(Method m){
+        return new BiConsumer() {
+            @Override
+            public void accept(Object t, Object u) {
+                try{
+                    m.invoke(t, u);
+                } catch (ReflectiveOperationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
     
     Method getGetter(String fieldName, Class clazz){

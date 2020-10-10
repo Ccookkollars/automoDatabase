@@ -5,6 +5,7 @@
  */
 package com.automo;
 
+import com.automo.entity.Claim;
 import com.automo.entity.Contact;
 import com.automo.entity.Vehicle;
 import java.awt.TextField;
@@ -57,6 +58,16 @@ public class ApplicationSettings {
             "yearManufactured",
             "color",
             "vin"));
+
+        fieldIgnores.put(Claim.class, Arrays.asList("id"));
+        fieldNames.put(Claim.class, Arrays.asList(
+            "claimStatus",
+            "claimNumber",
+            "dateClaimIn",
+            "dateClaimOut",
+            "dateRentalCarStart",
+            "dateRentalCarEnd"));
+
     }
 
     public List<InterestingField> getInterestingFieldsFor(Class clazz){

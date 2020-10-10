@@ -5,6 +5,7 @@
  */
 package DBConnector;
 
+import com.automo.ClaimFrame;
 import com.automo.dao.ClaimDao;
 import com.automo.entity.Contact;
 import com.automo.entity.Vehicle;
@@ -178,6 +179,7 @@ public class MasterFrame extends javax.swing.JFrame {
             claimFrame.setContact((Contact) result[3]);
             claimFrame.setVehicle((Vehicle) result[1]);
             claimFrame.setVisible(true);
+            claimFrame.pack();
         } catch (SQLException ex) {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

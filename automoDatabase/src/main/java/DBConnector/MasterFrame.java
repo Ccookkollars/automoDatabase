@@ -6,7 +6,7 @@
 package DBConnector;
 
 import com.automo.ClaimFrame;
-import com.automo.EditVehiclesFrame;
+import com.automo.CustomerFrame;
 import com.automo.dao.ClaimDao;
 import com.automo.dao.CustomerDao;
 import com.automo.entity.Claim;
@@ -44,7 +44,7 @@ public class MasterFrame extends javax.swing.JFrame {
         claimDao = new ClaimDao();
         customerDao = new CustomerDao();
         claimFrame = new ClaimFrame();
-        editVehiclesFrame = new EditVehiclesFrame();
+        customerFrame = new CustomerFrame();
         setTitle("MasterFrame");
         setVisible(true);
     }
@@ -76,7 +76,9 @@ public class MasterFrame extends javax.swing.JFrame {
         button2 = new java.awt.Button();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        windowMenu = new javax.swing.JMenu();
+        customerFrameMenuItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -186,7 +188,6 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel3.add(editVehicleButton, gridBagConstraints);
-        editVehicleButton.getAccessibleContext().setAccessibleName("Find Customer");
 
         customerNameBox2.setText("Lizeth");
         customerNameBox2.setPreferredSize(new java.awt.Dimension(65, 27));
@@ -219,8 +220,20 @@ public class MasterFrame extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        windowMenu.setText("Window");
+
+        customerFrameMenuItem.setText("Customer View");
+        customerFrameMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerFrameMenuItemActionPerformed(evt);
+            }
+        });
+        windowMenu.add(customerFrameMenuItem);
+
+        jMenuItem2.setText("jMenuItem2");
+        windowMenu.add(jMenuItem2);
+
+        jMenuBar1.add(windowMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -230,9 +243,9 @@ public class MasterFrame extends javax.swing.JFrame {
     private void editVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editVehicleButtonActionPerformed
         try{
             Object[] result = customerDao.findByName(customerNameBox2.getText());
-            editVehiclesFrame.setCustomer((Customer) result[0]);
-            editVehiclesFrame.setVisible(true);
-            editVehiclesFrame.pack();
+            customerFrame.setCustomer((Customer) result[0]);
+            customerFrame.setVisible(true);
+            customerFrame.pack();
         } catch (SQLException ex) {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -269,6 +282,11 @@ public class MasterFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_vehicleMakeBoxActionPerformed
 
+    private void customerFrameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerFrameMenuItemActionPerformed
+        customerFrame.setVisible(true);
+        customerFrame.pack();
+    }//GEN-LAST:event_customerFrameMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -304,11 +322,12 @@ public class MasterFrame extends javax.swing.JFrame {
         });
     }
 
-    private final EditVehiclesFrame editVehiclesFrame;
+    private final CustomerFrame customerFrame;
     private final ClaimFrame claimFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button2;
     private java.awt.Button claimFrameButton;
+    private javax.swing.JMenuItem customerFrameMenuItem;
     private javax.swing.JTextField customerNameBox;
     private javax.swing.JTextField customerNameBox2;
     private java.awt.Button editVehicleButton;
@@ -318,12 +337,13 @@ public class MasterFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField vehicleMakeBox;
     private javax.swing.JTextField vehicleModelBox;
     private javax.swing.JTextField vehicleYearBox;
+    private javax.swing.JMenu windowMenu;
     // End of variables declaration//GEN-END:variables
 }

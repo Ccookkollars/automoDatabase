@@ -7,18 +7,68 @@ package com.automo;
 
 import com.automo.entity.Customer;
 import com.automo.entity.Vehicle;
+import java.awt.Component;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author caleb
+ * @author ultrasaur
  */
-public class EditVehiclesFrame extends javax.swing.JFrame {
+public class CustomerFrame extends javax.swing.JFrame {
 
+    private static final Logger LOG = LogManager.getLogger(CustomerFrame.class);
     /**
      * Creates new form CustomerVehiclePanel
      */
-    public EditVehiclesFrame() {
+    public CustomerFrame() {
+        vehicleListModel = new DefaultListModel<>();
+        vehicleListCellRenderer = new VehicleListCellRenderer();
         initComponents();
+        pack();
+        addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
     }
 
     /**
@@ -33,42 +83,51 @@ public class EditVehiclesFrame extends javax.swing.JFrame {
 
         singleCustomerPanel1 = new com.automo.SingleCustomerPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        vehicleList = new javax.swing.JList<>();
         singleVehiclePanel1 = new com.automo.SingleVehiclePanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
         getContentPane().add(singleCustomerPanel1, gridBagConstraints);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        vehicleList.setModel(vehicleListModel);
+        vehicleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        vehicleList.setToolTipText("");
+        vehicleList.setCellRenderer(vehicleListCellRenderer);
+        vehicleList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                vehicleListValueChanged(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(vehicleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         getContentPane().add(jScrollPane1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
         getContentPane().add(singleVehiclePanel1, gridBagConstraints);
 
-        jLabel1.setText("Edit Vehicles");
+        jLabel2.setText("Vehicles");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        getContentPane().add(jLabel1, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        getContentPane().add(jLabel2, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void vehicleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_vehicleListValueChanged
+        singleVehiclePanel1.setEntity(vehicleListModel.get(evt.getFirstIndex()));
+    }//GEN-LAST:event_vehicleListValueChanged
 
     /**
      * @param args the command line arguments
@@ -87,14 +146,18 @@ public class EditVehiclesFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditVehiclesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditVehiclesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditVehiclesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditVehiclesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -103,22 +166,50 @@ public class EditVehiclesFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditVehiclesFrame().setVisible(true);
+                new CustomerFrame().setVisible(true);
             }
         });
     }
 
     public void setCustomer(Customer c){
         singleCustomerPanel1.setEntity(c);
-//        c.getVehicleCollection().forEach(jList1.);
-        singleVehiclePanel1.setEntity(c.getPrimaryVehicleId());
+        for (Vehicle v : c.getVehicleCollection()){
+            vehicleListModel.addElement(v);
+        }
+        try {
+            vehicleList.setSelectedIndex(vehicleListModel.indexOf(c.getPrimaryVehicleId()));
+        } catch (Exception e) {
+            try {
+                vehicleList.setSelectedIndex(0);
+            } catch (Exception e2) {
+            }
+        }
     }
     
+    private class VehicleListCellRenderer implements ListCellRenderer<Vehicle>{
+
+        private final DefaultListCellRenderer ren = new DefaultListCellRenderer();
+        
+        @Override
+        public Component getListCellRendererComponent(JList<? extends Vehicle> list, Vehicle value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component component = ren.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (component instanceof JLabel){
+                JLabel label = (JLabel) component;
+                label.setText(String.format("%s\t %s\t %s", value.getPlate(), value.getMake(), value.getModel()));
+            }
+            return component;
+        }
+        
+    }
+
+    
+    private DefaultListModel<Vehicle> vehicleListModel;
+    private ListCellRenderer<Vehicle> vehicleListCellRenderer;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private com.automo.SingleCustomerPanel singleCustomerPanel1;
     private com.automo.SingleVehiclePanel singleVehiclePanel1;
+    private javax.swing.JList<Vehicle> vehicleList;
     // End of variables declaration//GEN-END:variables
 }

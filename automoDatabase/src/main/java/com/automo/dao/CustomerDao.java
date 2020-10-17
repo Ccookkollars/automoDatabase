@@ -26,8 +26,9 @@ public class CustomerDao extends BaseEntityDataAccessObject {
 
     public Object[] findByName(String name) throws SQLException{
               TypedQuery<Object[]> query = em.createQuery(
-            "SELECT cu, ct FROM Customer cu "
+            "SELECT cu, ct, ve FROM Customer cu "
                     + "JOIN cu.contactId ct\n"
+                    + "JOIN FETCH cu.vehicleCollection ve\n"
                     + "WHERE ct.firstName like :name\n",
                       Object[].class);
 

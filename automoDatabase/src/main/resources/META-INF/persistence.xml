@@ -12,6 +12,7 @@
     <class>com.automo.entity.Vehicle</class>
     <class>com.automo.entity.Contact_1</class>
     <class>com.automo.entity.Payor_1</class>
+    <class>com.automo.entity.ClaimLog</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://database-1.cde4bwcff8jh.us-east-2.rds.amazonaws.com:3306/schema_1?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="caleb"/>

@@ -32,6 +32,7 @@ public class ApplicationContext {
     private final EntityManager entityManager;
 
     private CustomerPickerFrame customerPicker = null;
+    private VehiclePickerFrame vehiclePicker = null;
 
     private ApplicationContext() {
         applicationSettings = new ApplicationSettings();
@@ -45,6 +46,7 @@ public class ApplicationContext {
         }
         isSetup = true;
         customerPicker = new CustomerPickerFrame();
+        vehiclePicker = new VehiclePickerFrame();
     }
 
     // Singleton

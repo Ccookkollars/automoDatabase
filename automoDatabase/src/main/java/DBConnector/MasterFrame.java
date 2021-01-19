@@ -5,8 +5,10 @@
  */
 package DBConnector;
 
+import com.automo.ApplicationContext;
 import com.automo.ClaimFrame;
 import com.automo.CustomerFrame;
+import com.automo.Event;
 import com.automo.dao.ClaimDao;
 import com.automo.dao.CustomerDao;
 import com.automo.entity.Claim;
@@ -23,13 +25,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  */
 public class MasterFrame extends javax.swing.JFrame {
-
-    private static final MasterFrame instance = new MasterFrame();
+    
     ClaimDao claimDao;
+    ApplicationContext ctx = ApplicationContext.getInstance();
     CustomerDao customerDao;
-    public static MasterFrame getInstance() {
-        return instance;
-    }
+
     /**
      * Creates new form MasterFrame
      */
@@ -46,6 +46,7 @@ public class MasterFrame extends javax.swing.JFrame {
         claimFrame = new ClaimFrame();
         customerFrame = new CustomerFrame();
         setTitle("MasterFrame");
+        pack();
         setVisible(true);
     }
 
@@ -64,16 +65,13 @@ public class MasterFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        claimFrameButton = new java.awt.Button();
         customerNameBox = new javax.swing.JTextField();
         vehicleYearBox = new javax.swing.JTextField();
         vehicleMakeBox = new javax.swing.JTextField();
         vehicleModelBox = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        editVehicleButton = new java.awt.Button();
-        customerNameBox2 = new javax.swing.JTextField();
-        button2 = new java.awt.Button();
+        findVehicleButton = new java.awt.Button();
+        findCustomerButton = new java.awt.Button();
+        findClaimButton = new java.awt.Button();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
@@ -109,18 +107,6 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         jPanel4.add(jLabel8, gridBagConstraints);
-
-        claimFrameButton.setLabel("Find Claim");
-        claimFrameButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                claimFrameButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel4.add(claimFrameButton, gridBagConstraints);
 
         customerNameBox.setText("Lizeth");
         customerNameBox.setPreferredSize(new java.awt.Dimension(65, 27));
@@ -167,55 +153,36 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jPanel4, gridBagConstraints);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
-
-        jLabel2.setText("Customer Name");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        jPanel3.add(jLabel2, gridBagConstraints);
-
-        editVehicleButton.setActionCommand("Find Customer");
-        editVehicleButton.setLabel("Find Customer");
-        editVehicleButton.addActionListener(new java.awt.event.ActionListener() {
+        findVehicleButton.setLabel("Find Vehicle");
+        findVehicleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editVehicleButtonActionPerformed(evt);
+                findVehicleButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        getContentPane().add(findVehicleButton, gridBagConstraints);
+
+        findCustomerButton.setLabel("Find Customer");
+        findCustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findCustomerButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel3.add(editVehicleButton, gridBagConstraints);
+        getContentPane().add(findCustomerButton, gridBagConstraints);
 
-        customerNameBox2.setText("Lizeth");
-        customerNameBox2.setPreferredSize(new java.awt.Dimension(65, 27));
-        customerNameBox2.addActionListener(new java.awt.event.ActionListener() {
+        findClaimButton.setLabel("Find Claim");
+        findClaimButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customerNameBox2ActionPerformed(evt);
+                findClaimButtonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        jPanel3.add(customerNameBox2, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(jPanel3, gridBagConstraints);
-
-        button2.setLabel("Show Vehicles");
-        button2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button2ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(button2, gridBagConstraints);
+        getContentPane().add(findClaimButton, new java.awt.GridBagConstraints());
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -240,39 +207,19 @@ public class MasterFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void editVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editVehicleButtonActionPerformed
-        try{
-            Object[] result = customerDao.findByName(customerNameBox2.getText());
-            customerFrame.setCustomer((Customer) result[0]);
-            customerFrame.setVisible(true);
-            customerFrame.pack();
-        } catch (SQLException ex) {
-            Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_editVehicleButtonActionPerformed
+    private void findCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findCustomerButtonActionPerformed
+        ctx.getEventBus().post(new Event.ShowFrameEvent(ctx.getCustomerPicker()));
+    }//GEN-LAST:event_findCustomerButtonActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-
+    private void findVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findVehicleButtonActionPerformed
+        
         CarSearchFrame vehicles = new CarSearchFrame();
         vehicles.setTitle("Getting There");
-        vehicles.setVisible(true);    }//GEN-LAST:event_button2ActionPerformed
+        vehicles.setVisible(true);    }//GEN-LAST:event_findVehicleButtonActionPerformed
 
-    private void customerNameBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerNameBox2ActionPerformed
-
-    private void claimFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claimFrameButtonActionPerformed
-        try{
-            Object[] result = claimDao.findClaim(customerNameBox2.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
-            claimFrame.setContact((Contact) result[3]);
-            claimFrame.setClaim((Claim) result[0]);
-            claimFrame.setVehicle((Vehicle) result[1]);
-            claimFrame.setVisible(true);
-            claimFrame.pack();
-        } catch (SQLException ex) {
-            Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_claimFrameButtonActionPerformed
+    private void findClaimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findClaimButtonActionPerformed
+        throw new UnsupportedOperationException();
+    }//GEN-LAST:event_findClaimButtonActionPerformed
 
     private void customerNameBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBoxActionPerformed
         // TODO add your handling code here:
@@ -321,17 +268,15 @@ public class MasterFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private final CustomerFrame customerFrame;
     private final ClaimFrame claimFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button2;
-    private java.awt.Button claimFrameButton;
     private javax.swing.JMenuItem customerFrameMenuItem;
     private javax.swing.JTextField customerNameBox;
-    private javax.swing.JTextField customerNameBox2;
-    private java.awt.Button editVehicleButton;
-    private javax.swing.JLabel jLabel2;
+    private java.awt.Button findClaimButton;
+    private java.awt.Button findCustomerButton;
+    private java.awt.Button findVehicleButton;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -339,7 +284,6 @@ public class MasterFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField vehicleMakeBox;
     private javax.swing.JTextField vehicleModelBox;

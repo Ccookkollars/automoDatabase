@@ -22,9 +22,9 @@ public abstract class BaseEntityDataAccessObject<E> extends BasicDataAccessObjec
 
     public BaseEntityDataAccessObject() {
         super();
-        try{
+        try {
             em = ApplicationContext.getInstance().getEntityManager();
-        }catch(NoClassDefFoundError e){
+        } catch (NoClassDefFoundError e) {
             LOG.error(e);
         }
         typeToken = getTypeToken();
@@ -48,7 +48,7 @@ public abstract class BaseEntityDataAccessObject<E> extends BasicDataAccessObjec
         throw new UnsupportedOperationException("Was lazy. Please implement in the corresponding Data Access Object for " + typeToken.getSimpleName());
     }
 
-    public List<E> findAllClaims() {
+    public List<E> findAll() {
         return em.createNamedQuery(typeToken.getSimpleName() + ".findAll", typeToken).getResultList();
     }
 }

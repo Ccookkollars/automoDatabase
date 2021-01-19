@@ -30,7 +30,7 @@ public class SingleContactPanel extends SingleEntityPanel<Contact> {
 
     @Override
     void create(Contact e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        contactDao.create(e);
     }
 
     @Override

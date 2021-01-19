@@ -40,7 +40,6 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
             LOG.error(e);
         }
         initComponents();
-        LOG.info("Initialized singleEntityPanel " + panelTitle);
     }
 
     abstract String getPanelTitle();
@@ -164,7 +163,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
         }
         for (InterestingField i : interestingFields) {
             try{
-                if (!Objects.equals(i.getGetter().apply(entity).toString(), i.getTextField().getText())){
+                if (!i.getTextField().getText().equals(Objects.toString(i.getGetter().apply(entity)))){
                     LOG.info("Detected changed value for field " + i.getDisplayName());
                     anythingChanged = true;
                     i.getSetter().accept(entity, i.getTextField().getText());
@@ -186,7 +185,7 @@ public abstract class SingleEntityPanel<E> extends javax.swing.JPanel {
     public void initEntityFields(E entity) {
         for (InterestingField i : interestingFields) {
             try {
-                i.getTextField().setText(i.getGetter().apply(entity).toString());
+                i.getTextField().setText(Objects.toString(i.getGetter().apply(entity)));
             } catch (Exception e) {
                 LOG.warn("Issue setting field " + i.getDisplayName(), e);
             }

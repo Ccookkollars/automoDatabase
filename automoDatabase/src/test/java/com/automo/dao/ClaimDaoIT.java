@@ -95,7 +95,7 @@ public class ClaimDaoIT {
      */
     @Test
     public void testFindClaims_() {
-        List<Claim> claims = instance.findAllClaims();
+        List<Claim> claims = instance.findAll();
         assert(!claims.isEmpty());
         LOG.info(String.join(":", Lists.transform(claims, Claim::toString)));
     }

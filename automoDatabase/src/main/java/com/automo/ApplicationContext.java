@@ -5,42 +5,54 @@
  */
 package com.automo;
 
+import com.automo.entity.Customer;
+import com.google.common.eventbus.EventBus;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  *
  */
+@Getter
+@Setter
 public class ApplicationContext {
 
     private static final Logger LOG = LogManager.getLogger(ApplicationContext.class);
     private ApplicationSettings applicationSettings;
-    private ApplicationContext applicationContext;
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    private final EventBus eventBus = new EventBus("app");
+    private boolean isSetup = false;
+
+    private final EntityManagerFactory emf;
+    private final EntityManager entityManager;
+
+    private CustomerPickerFrame customerPicker = null;
 
     private ApplicationContext() {
         applicationSettings = new ApplicationSettings();
         emf = Persistence.createEntityManagerFactory("com.automo1");
-        em = emf.createEntityManager();
+        entityManager = emf.createEntityManager();
+    }
+
+    private void oneTimeSetup() {
+        if (isSetup){
+            return;
+        }
+        isSetup = true;
+        customerPicker = new CustomerPickerFrame();
     }
 
     // Singleton
-    public static ApplicationContext instance = new ApplicationContext();
+    private static ApplicationContext instance = new ApplicationContext();
+
     public static ApplicationContext getInstance() {
+        instance.oneTimeSetup();
         return instance;
     }
 
-    public ApplicationSettings getApplicationSettings() {
-        return applicationSettings;
-    }
-    public void setApplicationSettings(ApplicationSettings applicationSettings) {
-        this.applicationSettings = applicationSettings;
-    }
-    public EntityManager getEntityManager() {
-        return em;
-    }
 }

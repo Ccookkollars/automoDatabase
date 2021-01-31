@@ -41,10 +41,6 @@
                       <Component id="allCarsButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="singleVehiclePanel1" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
       </Group>
@@ -66,8 +62,7 @@
                   </Group>
                   <Component id="allCarsButton" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="62" max="32767" attributes="0"/>
-              <Component id="singleVehiclePanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="122" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -152,8 +147,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allCarsButtonActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="com.automo.SingleVehiclePanel" name="singleVehiclePanel1">
     </Component>
   </SubComponents>
 </Form>

@@ -41,16 +41,16 @@ public class ClaimLog implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "timestamp")
+    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     @Basic(optional = false)
-    @Column(name = "note")
+    @Column(nullable = false, length = 100)
     private String note;
-    @JoinColumn(name = "claim_id", referencedColumnName = "id")
+    @JoinColumn(name = "claim_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Claim claimId;
 

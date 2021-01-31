@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Car.findByMake", query = "SELECT c FROM Car c WHERE c.make = :make"),
     @NamedQuery(name = "Car.findByModel", query = "SELECT c FROM Car c WHERE c.model = :model"),
     @NamedQuery(name = "Car.findByPlate", query = "SELECT c FROM Car c WHERE c.plate = :plate"),
-    @NamedQuery(name = "Car.findByColor", query = "SELECT c FROM Car c WHERE c.color = :color")})
+    @NamedQuery(name = "Car.findByColor", query = "SELECT c FROM Car c WHERE c.color = :color"),
+    @NamedQuery(name = "Car.findByStatus", query = "SELECT c FROM Car c WHERE c.status = :status")})
 public class Car implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +48,8 @@ public class Car implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false, length = 100)
     private String color;
+    @Column(length = 100)
+    private String status;
 
     public Car() {
     }
@@ -101,6 +104,14 @@ public class Car implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

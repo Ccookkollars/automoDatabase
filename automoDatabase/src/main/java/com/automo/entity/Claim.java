@@ -69,6 +69,10 @@ public class Claim implements Serializable {
     @Column(name = "date_rental_car_end")
     @Temporal(TemporalType.DATE)
     private Date dateRentalCarEnd;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimId")
+    private Collection<Payment> paymentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimId")
+    private Collection<ClaimLog> claimLogCollection;
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Vehicle vehicleId;
@@ -84,8 +88,6 @@ public class Claim implements Serializable {
     @JoinColumn(name = "appraiser_contact_id", referencedColumnName = "id")
     @ManyToOne
     private Contact appraiserContactId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimId")
-    private Collection<Payment> paymentCollection;
 
     public Claim() {
     }
@@ -158,6 +160,24 @@ public class Claim implements Serializable {
         this.dateRentalCarEnd = dateRentalCarEnd;
     }
 
+    @XmlTransient
+    public Collection<Payment> getPaymentCollection() {
+        return paymentCollection;
+    }
+
+    public void setPaymentCollection(Collection<Payment> paymentCollection) {
+        this.paymentCollection = paymentCollection;
+    }
+
+    @XmlTransient
+    public Collection<ClaimLog> getClaimLogCollection() {
+        return claimLogCollection;
+    }
+
+    public void setClaimLogCollection(Collection<ClaimLog> claimLogCollection) {
+        this.claimLogCollection = claimLogCollection;
+    }
+
     public Vehicle getVehicleId() {
         return vehicleId;
     }
@@ -196,15 +216,6 @@ public class Claim implements Serializable {
 
     public void setAppraiserContactId(Contact appraiserContactId) {
         this.appraiserContactId = appraiserContactId;
-    }
-
-    @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
-    }
-
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
     }
 
     @Override

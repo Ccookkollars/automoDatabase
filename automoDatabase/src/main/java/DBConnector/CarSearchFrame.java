@@ -67,11 +67,11 @@ public class CarSearchFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Make", "Model", "VIN"
+                "Make", "Model", "VIN", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -85,11 +85,6 @@ public class CarSearchFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(resultsTable);
-        if (resultsTable.getColumnModel().getColumnCount() > 0) {
-            resultsTable.getColumnModel().getColumn(0).setResizable(false);
-            resultsTable.getColumnModel().getColumn(1).setResizable(false);
-            resultsTable.getColumnModel().getColumn(2).setResizable(false);
-        }
 
         allCarsButton.setLabel("button1");
         allCarsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -154,7 +149,7 @@ public class CarSearchFrame extends javax.swing.JFrame {
     //Currently only adds 2 fields, needs to implement year
     private void allCarsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCarsButtonActionPerformed
 
-        int colnum = 3;
+        int colnum = 4;
         String[] results = queryMaker.makeModelYearVin();
         DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
         if (model.getRowCount() > 0) {

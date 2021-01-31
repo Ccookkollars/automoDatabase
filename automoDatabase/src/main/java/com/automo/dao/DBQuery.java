@@ -26,6 +26,7 @@ public class DBQuery extends BasicDataAccessObject {
                 resultsList.add(rs.getString("make"));
                 resultsList.add(rs.getString("model"));
                 resultsList.add(rs.getString("vin"));
+                resultsList.add(rs.getString("status"));
             }
 
         } catch (Exception e) {

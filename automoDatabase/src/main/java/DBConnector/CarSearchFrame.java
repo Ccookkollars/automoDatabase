@@ -1,8 +1,10 @@
 package DBConnector;
 
+import com.automo.ApplicationContext;
 import com.automo.dao.VehicleDao;
 import com.automo.dao.DBQuery;
 import com.automo.entity.Vehicle;
+
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,6 +16,8 @@ public class CarSearchFrame extends javax.swing.JFrame {
 
     public static final Logger LOG = Logger.getLogger("CarSearchFrame");
     public static final int VIN_COLUMN = 2;
+    public ApplicationContext ctx = ApplicationContext.getInstance();
+
     /**
      * Creates new form CarSearchFrame
      */
@@ -36,12 +40,17 @@ public class CarSearchFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         searchLabel = new java.awt.Label();
         searchButton = new java.awt.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultsTable = new javax.swing.JTable();
         allCarsButton = new java.awt.Button();
+        selectButton = new java.awt.Button();
+        singleVehiclePanel1 = new com.automo.SingleVehiclePanel();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +101,14 @@ public class CarSearchFrame extends javax.swing.JFrame {
             }
         });
 
+        selectButton.setActionCommand("select");
+        selectButton.setLabel("select");
+        selectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,7 +127,12 @@ public class CarSearchFrame extends javax.swing.JFrame {
                         .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(allCarsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50))))
+                        .addGap(50, 50, 50))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(selectButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(singleVehiclePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +148,11 @@ public class CarSearchFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(allCarsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(selectButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(singleVehiclePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -145,7 +171,7 @@ public class CarSearchFrame extends javax.swing.JFrame {
     private void allCarsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCarsButtonActionPerformed
 
         int colnum = 4;
-        String[] results = queryMaker.makeModelYearVin();
+        String[] results = queryMaker.makeModelVinStatus();
         DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
         if (model.getRowCount() > 0) {
             int rowCount = model.getRowCount();
@@ -160,15 +186,12 @@ public class CarSearchFrame extends javax.swing.JFrame {
 
     private void resultsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultsTableMouseClicked
         resultsTable.getSelectedRow();
-        String vin = (String) resultsTable.getValueAt(resultsTable.getSelectedRow(), VIN_COLUMN);
-        Vehicle vehicle = vehicleDao.getByVin(vin);
-        LOG.info(vehicle.toString());
-        java.awt.EventQueue.invokeLater(() -> {
-            SingleVehicleView svv = new SingleVehicleView(vehicle);
-            svv.setVisible(true);
-           
-        });
     }//GEN-LAST:event_resultsTableMouseClicked
+
+    private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
+        Vehicle entity = vehicleDao.getByVin(resultsTable.getModel().getValueAt(resultsTable.getSelectedRow(), 2).toString());
+        singleVehiclePanel1.setEntity(entity);
+    }//GEN-LAST:event_selectButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,10 +234,13 @@ public class CarSearchFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button allCarsButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable resultsTable;
     private java.awt.Button searchButton;
     private javax.swing.JTextField searchField;
     private java.awt.Label searchLabel;
+    private java.awt.Button selectButton;
+    private com.automo.SingleVehiclePanel singleVehiclePanel1;
     // End of variables declaration//GEN-END:variables
 }

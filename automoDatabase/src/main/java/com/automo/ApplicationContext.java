@@ -5,7 +5,6 @@
  */
 package com.automo;
 
-import com.automo.entity.Customer;
 import com.google.common.eventbus.EventBus;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,6 +31,7 @@ public class ApplicationContext {
     private final EntityManager entityManager;
 
     private CustomerPickerFrame customerPicker = null;
+    private SingleVehiclePanel carSearchFrame = null;
     private VehiclePickerFrame vehiclePicker = null;
 
     private ApplicationContext() {

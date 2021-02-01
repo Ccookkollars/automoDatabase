@@ -14,7 +14,7 @@ import com.automo.entity.Vehicle;
 public class VehicleDao extends BaseEntityDataAccessObject {
 
     public Vehicle getByVin(String vin) {
-        return em.createNamedQuery("Vehicle.findByVin", Vehicle.class).getSingleResult();
+        return em.createNamedQuery("Vehicle.findByVin", Vehicle.class).setParameter("vin", vin).getSingleResult();
     }
 
     @Override

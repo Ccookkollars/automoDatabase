@@ -12,7 +12,7 @@ public class DBQuery extends BasicDataAccessObject {
 
     private static final Logger LOG = Logger.getLogger("DBQuery");
 
-    public String[] makeModelYearVin() {
+    public String[] makeModelVinStatus() {
 
         List<String> resultsList = new ArrayList<>();
         try {
@@ -20,7 +20,7 @@ public class DBQuery extends BasicDataAccessObject {
             Statement stmt = connection.getConnection().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT * FROM CAR");
+            rs = stmt.executeQuery("SELECT * FROM VEHICLE");
 
             while (rs.next()) {
                 resultsList.add(rs.getString("make"));

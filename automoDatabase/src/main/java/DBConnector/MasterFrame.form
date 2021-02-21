@@ -115,7 +115,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Lizeth"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[65, 27]"/>
+              <Dimension value="[80, 27]"/>
             </Property>
           </Properties>
           <Events>
@@ -134,7 +134,7 @@
               <Dimension value="[1100, 27]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[65, 27]"/>
+              <Dimension value="[80, 27]"/>
             </Property>
           </Properties>
           <Constraints>
@@ -147,7 +147,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="honda"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[65, 27]"/>
+              <Dimension value="[80, 27]"/>
             </Property>
           </Properties>
           <Events>
@@ -163,7 +163,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="accord"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[65, 27]"/>
+              <Dimension value="[80, 27]"/>
             </Property>
           </Properties>
           <Constraints>

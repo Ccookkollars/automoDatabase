@@ -15,6 +15,7 @@ import com.automo.entity.Claim;
 import com.automo.entity.Contact;
 import com.automo.entity.Customer;
 import com.automo.entity.Vehicle;
+
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  */
 public class MasterFrame extends javax.swing.JFrame {
-    
+
     ClaimDao claimDao;
     ApplicationContext ctx = ApplicationContext.getInstance();
     CustomerDao customerDao;
@@ -81,7 +82,7 @@ public class MasterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
         jLabel5.setText("Vehicle Make");
@@ -109,7 +110,7 @@ public class MasterFrame extends javax.swing.JFrame {
         jPanel4.add(jLabel8, gridBagConstraints);
 
         customerNameBox.setText("Lizeth");
-        customerNameBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        customerNameBox.setPreferredSize(new java.awt.Dimension(80, 27));
         customerNameBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 customerNameBoxActionPerformed(evt);
@@ -122,7 +123,7 @@ public class MasterFrame extends javax.swing.JFrame {
 
         vehicleYearBox.setText("2011");
         vehicleYearBox.setMinimumSize(new java.awt.Dimension(1100, 27));
-        vehicleYearBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        vehicleYearBox.setPreferredSize(new java.awt.Dimension(80, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -130,7 +131,7 @@ public class MasterFrame extends javax.swing.JFrame {
         jPanel4.add(vehicleYearBox, gridBagConstraints);
 
         vehicleMakeBox.setText("honda");
-        vehicleMakeBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        vehicleMakeBox.setPreferredSize(new java.awt.Dimension(80, 27));
         vehicleMakeBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehicleMakeBoxActionPerformed(evt);
@@ -142,7 +143,7 @@ public class MasterFrame extends javax.swing.JFrame {
         jPanel4.add(vehicleMakeBox, gridBagConstraints);
 
         vehicleModelBox.setText("accord");
-        vehicleModelBox.setPreferredSize(new java.awt.Dimension(65, 27));
+        vehicleModelBox.setPreferredSize(new java.awt.Dimension(80, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -212,13 +213,23 @@ public class MasterFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_findCustomerButtonActionPerformed
 
     private void findVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findVehicleButtonActionPerformed
-        
+
         CarSearchFrame vehicles = new CarSearchFrame();
         vehicles.setTitle("Getting There");
-        vehicles.setVisible(true);    }//GEN-LAST:event_findVehicleButtonActionPerformed
+        vehicles.setVisible(true);
+    }//GEN-LAST:event_findVehicleButtonActionPerformed
 
     private void findClaimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findClaimButtonActionPerformed
-        throw new UnsupportedOperationException();
+        try {
+            Object[] result = claimDao.findClaim(customerNameBox.getText(), vehicleYearBox.getText(), vehicleMakeBox.getText(), vehicleModelBox.getText());
+            claimFrame.setContact((Contact) result[3]);
+            claimFrame.setClaim((Claim) result[0]);
+            claimFrame.setVehicle((Vehicle) result[1]);
+            claimFrame.setVisible(true);
+            claimFrame.pack();
+        } catch (SQLException ex) {
+            Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_findClaimButtonActionPerformed
 
     private void customerNameBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameBoxActionPerformed
@@ -241,7 +252,7 @@ public class MasterFrame extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -268,7 +279,7 @@ public class MasterFrame extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private final CustomerFrame customerFrame;
     private final ClaimFrame claimFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables

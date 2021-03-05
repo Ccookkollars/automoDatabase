@@ -33,6 +33,7 @@ public class ApplicationContext {
     private CustomerPickerFrame customerPicker = null;
     private SingleVehiclePanel carSearchFrame = null;
     private VehiclePickerFrame vehiclePicker = null;
+    private SingleOrderFrame singleOrderFrame = null;
 
     private ApplicationContext() {
         applicationSettings = new ApplicationSettings();
@@ -47,6 +48,7 @@ public class ApplicationContext {
         isSetup = true;
         customerPicker = new CustomerPickerFrame();
         vehiclePicker = new VehiclePickerFrame();
+        singleOrderFrame = new SingleOrderFrame();
     }
 
     // Singleton

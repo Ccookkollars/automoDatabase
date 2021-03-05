@@ -8,6 +8,7 @@ package com.automo;
 import com.automo.entity.Claim;
 import com.automo.entity.Contact;
 import com.automo.entity.Customer;
+import com.automo.entity.JobOrder;
 import com.automo.entity.Vehicle;
 import java.awt.TextField;
 import java.lang.reflect.Field;
@@ -60,16 +61,21 @@ public class ApplicationSettings {
             "model",
             "yearManufactured",
             "color",
-            "vin"));
+            "vin",
+            "status"));
 
         fieldIgnores.put(Claim.class, Arrays.asList("id"));
         fieldNames.put(Claim.class, Arrays.asList(
-            "claimStatus",
-            "claimNumber",
             "dateClaimIn",
             "dateClaimOut",
             "dateRentalCarStart",
             "dateRentalCarEnd"));
+        
+        fieldIgnores.put(JobOrder.class, Arrays.asList("id"));
+        fieldNames.put(JobOrder.class, Arrays.asList(
+            "orderStatus",
+            "dateOrderIn",
+            "dateOrderOut"));
 
     }
 
@@ -94,7 +100,7 @@ public class ApplicationSettings {
                 }
             }
             // this means the expected field was not present by reflection
-            throw new IllegalStateException("Could not inspect InterestingField for configured property " + name);
+            throw new IllegalStateException(String.format("Could not inspect InterestingField for %s.%s", clazz.getSimpleName(), name));
         }
         
         // a nice reminder that you haven't configured all fields yet
@@ -118,7 +124,7 @@ public class ApplicationSettings {
                 Function getter = asFunction(getGetter(field.getName(), clazz));
                 BiConsumer setter = asBiConsumer(getSetter(field.getName(), clazz));
                 if (getter != null && setter   != null) {
-                    interestingFields.add(new InterestingField(field.getName(), getter, setter, new TextField()));
+                    interestingFields.add(new InterestingField(field.getType(), field.getName(), getter, setter, new TextField()));
                 }
                 
             }

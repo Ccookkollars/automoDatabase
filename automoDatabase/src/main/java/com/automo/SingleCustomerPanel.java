@@ -49,7 +49,7 @@ public class SingleCustomerPanel extends SingleEntityPanel<Customer> {
     @Override
     public void setEntity(Customer entity) {
         super.setEntity(entity);
-        contactPanel.setEntity(entity.getContactId());
+        contactPanel.setEntity(entity.getContact());
     }
     
 }

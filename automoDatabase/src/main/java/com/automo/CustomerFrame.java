@@ -173,11 +173,11 @@ public class CustomerFrame extends javax.swing.JFrame {
 
     public void setCustomer(Customer c){
         singleCustomerPanel1.setEntity(c);
-        for (Vehicle v : c.getVehicleCollection()){
+        for (Vehicle v : c.getVehicles()){
             vehicleListModel.addElement(v);
         }
         try {
-            vehicleList.setSelectedIndex(vehicleListModel.indexOf(c.getPrimaryVehicleId()));
+            vehicleList.setSelectedIndex(vehicleListModel.indexOf(c.getVehicle()));
         } catch (Exception e) {
             try {
                 vehicleList.setSelectedIndex(0);

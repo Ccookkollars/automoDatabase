@@ -18,6 +18,7 @@ import lombok.Data;
 @Data
 public class InterestingField {
 
+    private final Class<?> typeToken;
     private final String displayName;
     private final Function getter;
     private final BiConsumer setter;

@@ -1,191 +1,193 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.automo.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.*;
+import java.util.List;
+
 
 /**
- *
- * @author ylltrazoaar, the always and everywhere
+ * The persistent class for the CONTACT database table.
+ * 
  */
 @Entity
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Contact.findAll", query = "SELECT c FROM Contact c"),
-    @NamedQuery(name = "Contact.findById", query = "SELECT c FROM Contact c WHERE c.id = :id"),
-    @NamedQuery(name = "Contact.findByFirstName", query = "SELECT c FROM Contact c WHERE c.firstName = :firstName"),
-    @NamedQuery(name = "Contact.findByLastName", query = "SELECT c FROM Contact c WHERE c.lastName = :lastName"),
-    @NamedQuery(name = "Contact.findByPhoneNumber", query = "SELECT c FROM Contact c WHERE c.phoneNumber = :phoneNumber"),
-    @NamedQuery(name = "Contact.findByEmailAddress", query = "SELECT c FROM Contact c WHERE c.emailAddress = :emailAddress"),
-    @NamedQuery(name = "Contact.findByStreetAddress", query = "SELECT c FROM Contact c WHERE c.streetAddress = :streetAddress")})
+@Table(name="CONTACT")
+@NamedQuery(name="Contact.findAll", query="SELECT c FROM Contact c")
 public class Contact implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Basic(optional = false)
-    @Column(name = "first_name", nullable = false, length = 100)
-    private String firstName;
-    @Basic(optional = false)
-    @Column(name = "last_name", nullable = false, length = 100)
-    private String lastName;
-    @Basic(optional = false)
-    @Column(name = "phone_number", nullable = false, length = 100)
-    private String phoneNumber;
-    @Column(name = "email_address", length = 100)
-    private String emailAddress;
-    @Column(name = "street_address", length = 100)
-    private String streetAddress;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactId")
-    private Collection<Payor> payorCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "insuranceContactId")
-    private Collection<Claim> claimCollection;
-    @OneToMany(mappedBy = "appraiserContactId")
-    private Collection<Claim> claimCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contactId")
-    private Collection<Customer> customerCollection;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
+	private int id;
 
-    public Contact() {
-    }
+	@Column(name="email_address", length=100)
+	private String emailAddress;
 
-    public Contact(Integer id) {
-        this.id = id;
-    }
+	@Column(name="first_name", nullable=false, length=100)
+	private String firstName;
 
-    public Contact(Integer id, String firstName, String lastName, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
+	@Column(name="last_name", nullable=false, length=100)
+	private String lastName;
 
-    public Integer getId() {
-        return id;
-    }
+	@Column(name="phone_number", nullable=false, length=100)
+	private String phoneNumber;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@Column(name="street_address", length=100)
+	private String streetAddress;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	//bi-directional many-to-one association to Claim
+	@OneToMany(mappedBy="contact1")
+	private List<Claim> claims1;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	//bi-directional many-to-one association to Claim
+	@OneToMany(mappedBy="contact2")
+	private List<Claim> claims2;
 
-    public String getLastName() {
-        return lastName;
-    }
+	//bi-directional many-to-one association to Customer
+	@OneToMany(mappedBy="contact")
+	private List<Customer> customers;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	//bi-directional many-to-one association to Payor
+	@OneToMany(mappedBy="contact")
+	private List<Payor> payors;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public Contact() {
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public int getId() {
+		return this.id;
+	}
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+	public String getEmailAddress() {
+		return this.emailAddress;
+	}
 
-    public String getStreetAddress() {
-        return streetAddress;
-    }
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
-    @XmlTransient
-    public Collection<Payor> getPayorCollection() {
-        return payorCollection;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setPayorCollection(Collection<Payor> payorCollection) {
-        this.payorCollection = payorCollection;
-    }
+	public String getLastName() {
+		return this.lastName;
+	}
 
-    @XmlTransient
-    public Collection<Claim> getClaimCollection() {
-        return claimCollection;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setClaimCollection(Collection<Claim> claimCollection) {
-        this.claimCollection = claimCollection;
-    }
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
 
-    @XmlTransient
-    public Collection<Claim> getClaimCollection1() {
-        return claimCollection1;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public void setClaimCollection1(Collection<Claim> claimCollection1) {
-        this.claimCollection1 = claimCollection1;
-    }
+	public String getStreetAddress() {
+		return this.streetAddress;
+	}
 
-    @XmlTransient
-    public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
-    }
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
 
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
-    }
+	public List<Claim> getClaims1() {
+		return this.claims1;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	public void setClaims1(List<Claim> claims1) {
+		this.claims1 = claims1;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Contact)) {
-            return false;
-        }
-        Contact other = (Contact) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+	public Claim addClaims1(Claim claims1) {
+		getClaims1().add(claims1);
+		claims1.setContact1(this);
 
-    @Override
-    public String toString() {
-        return "com.automo.entity.Contact[ id=" + id + " ]";
-    }
+		return claims1;
+	}
+
+	public Claim removeClaims1(Claim claims1) {
+		getClaims1().remove(claims1);
+		claims1.setContact1(null);
+
+		return claims1;
+	}
+
+	public List<Claim> getClaims2() {
+		return this.claims2;
+	}
+
+	public void setClaims2(List<Claim> claims2) {
+		this.claims2 = claims2;
+	}
+
+	public Claim addClaims2(Claim claims2) {
+		getClaims2().add(claims2);
+		claims2.setContact2(this);
+
+		return claims2;
+	}
+
+	public Claim removeClaims2(Claim claims2) {
+		getClaims2().remove(claims2);
+		claims2.setContact2(null);
+
+		return claims2;
+	}
+
+	public List<Customer> getCustomers() {
+		return this.customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
+	}
+
+	public Customer addCustomer(Customer customer) {
+		getCustomers().add(customer);
+		customer.setContact(this);
+
+		return customer;
+	}
+
+	public Customer removeCustomer(Customer customer) {
+		getCustomers().remove(customer);
+		customer.setContact(null);
+
+		return customer;
+	}
+
+	public List<Payor> getPayors() {
+		return this.payors;
+	}
+
+	public void setPayors(List<Payor> payors) {
+		this.payors = payors;
+	}
+
+	public Payor addPayor(Payor payor) {
+		getPayors().add(payor);
+		payor.setContact(this);
+
+		return payor;
+	}
+
+	public Payor removePayor(Payor payor) {
+		getPayors().remove(payor);
+		payor.setContact(null);
+
+		return payor;
+	}
 
 }

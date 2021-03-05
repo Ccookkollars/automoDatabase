@@ -1,128 +1,112 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.automo.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.*;
+import java.util.List;
+
 
 /**
- *
- * @author ylltrazoaar, the always and everywhere
+ * The persistent class for the CUSTOMER database table.
+ * 
  */
 @Entity
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c"),
-    @NamedQuery(name = "Customer.findById", query = "SELECT c FROM Customer c WHERE c.id = :id")})
+@Table(name="CUSTOMER")
+@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
 public class Customer implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Claim> claimCollection;
-    @JoinColumn(name = "primary_vehicle_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Vehicle primaryVehicleId;
-    @JoinColumn(name = "contact_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Contact contactId;
-    @OneToMany(mappedBy = "primaryCustomerId")
-    private Collection<Vehicle> vehicleCollection;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
+	private int id;
 
-    public Customer() {
-    }
+	//bi-directional many-to-one association to Vehicle
+	@ManyToOne
+	@JoinColumn(name="primary_vehicle_id", nullable=false)
+	private Vehicle vehicle;
 
-    public Customer(Integer id) {
-        this.id = id;
-    }
+	//bi-directional many-to-one association to Contact
+	@ManyToOne
+	@JoinColumn(name="contact_id", nullable=false)
+	private Contact contact;
 
-    public Integer getId() {
-        return id;
-    }
+	//bi-directional many-to-one association to JobOrder
+	@OneToMany(mappedBy="customer")
+	private List<JobOrder> jobOrders;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	//bi-directional many-to-one association to Vehicle
+	@OneToMany(mappedBy="customer")
+	private List<Vehicle> vehicles;
 
-    @XmlTransient
-    public Collection<Claim> getClaimCollection() {
-        return claimCollection;
-    }
+	public Customer() {
+	}
 
-    public void setClaimCollection(Collection<Claim> claimCollection) {
-        this.claimCollection = claimCollection;
-    }
+	public int getId() {
+		return this.id;
+	}
 
-    public Vehicle getPrimaryVehicleId() {
-        return primaryVehicleId;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setPrimaryVehicleId(Vehicle primaryVehicleId) {
-        this.primaryVehicleId = primaryVehicleId;
-    }
+	public Vehicle getVehicle() {
+		return this.vehicle;
+	}
 
-    public Contact getContactId() {
-        return contactId;
-    }
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
 
-    public void setContactId(Contact contactId) {
-        this.contactId = contactId;
-    }
+	public Contact getContact() {
+		return this.contact;
+	}
 
-    @XmlTransient
-    public Collection<Vehicle> getVehicleCollection() {
-        return vehicleCollection;
-    }
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
 
-    public void setVehicleCollection(Collection<Vehicle> vehicleCollection) {
-        this.vehicleCollection = vehicleCollection;
-    }
+	public List<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	public void setJobOrders(List<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Customer)) {
-            return false;
-        }
-        Customer other = (Customer) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+	public JobOrder addJobOrder(JobOrder jobOrder) {
+		getJobOrders().add(jobOrder);
+		jobOrder.setCustomer(this);
 
-    @Override
-    public String toString() {
-        return "com.automo.entity.Customer[ id=" + id + " ]";
-    }
+		return jobOrder;
+	}
+
+	public JobOrder removeJobOrder(JobOrder jobOrder) {
+		getJobOrders().remove(jobOrder);
+		jobOrder.setCustomer(null);
+
+		return jobOrder;
+	}
+
+	public List<Vehicle> getVehicles() {
+		return this.vehicles;
+	}
+
+	public void setVehicles(List<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
+
+	public Vehicle addVehicle(Vehicle vehicle) {
+		getVehicles().add(vehicle);
+		vehicle.setCustomer(this);
+
+		return vehicle;
+	}
+
+	public Vehicle removeVehicle(Vehicle vehicle) {
+		getVehicles().remove(vehicle);
+		vehicle.setCustomer(null);
+
+		return vehicle;
+	}
 
 }

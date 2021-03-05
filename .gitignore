@@ -19,6 +19,9 @@
 *.rar
 
 # Project Files #
+.settings
+.classpath
+.project
 .idea
 *.iml
 

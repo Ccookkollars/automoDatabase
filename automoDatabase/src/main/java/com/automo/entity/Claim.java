@@ -1,246 +1,200 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.automo.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import java.util.List;
+
 
 /**
- *
- * @author ylltrazoaar, the always and everywhere
+ * The persistent class for the CLAIM database table.
+ * 
  */
 @Entity
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Claim.findAll", query = "SELECT c FROM Claim c"),
-    @NamedQuery(name = "Claim.findById", query = "SELECT c FROM Claim c WHERE c.id = :id"),
-    @NamedQuery(name = "Claim.findByClaimNumber", query = "SELECT c FROM Claim c WHERE c.claimNumber = :claimNumber"),
-    @NamedQuery(name = "Claim.findByClaimStatus", query = "SELECT c FROM Claim c WHERE c.claimStatus = :claimStatus"),
-    @NamedQuery(name = "Claim.findByDateClaimIn", query = "SELECT c FROM Claim c WHERE c.dateClaimIn = :dateClaimIn"),
-    @NamedQuery(name = "Claim.findByDateClaimOut", query = "SELECT c FROM Claim c WHERE c.dateClaimOut = :dateClaimOut"),
-    @NamedQuery(name = "Claim.findByDateRentalCarStart", query = "SELECT c FROM Claim c WHERE c.dateRentalCarStart = :dateRentalCarStart"),
-    @NamedQuery(name = "Claim.findByDateRentalCarEnd", query = "SELECT c FROM Claim c WHERE c.dateRentalCarEnd = :dateRentalCarEnd")})
+@Table(name="CLAIM")
+@NamedQuery(name="Claim.findAll", query="SELECT c FROM Claim c")
 public class Claim implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
-    @Basic(optional = false)
-    @Column(name = "claim_number", nullable = false, length = 100)
-    private String claimNumber;
-    @Basic(optional = false)
-    @Column(name = "claim_status", nullable = false, length = 100)
-    private String claimStatus;
-    @Basic(optional = false)
-    @Column(name = "date_claim_in", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dateClaimIn;
-    @Basic(optional = false)
-    @Column(name = "date_claim_out", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dateClaimOut;
-    @Column(name = "date_rental_car_start")
-    @Temporal(TemporalType.DATE)
-    private Date dateRentalCarStart;
-    @Column(name = "date_rental_car_end")
-    @Temporal(TemporalType.DATE)
-    private Date dateRentalCarEnd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimId")
-    private Collection<Payment> paymentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimId")
-    private Collection<ClaimLog> claimLogCollection;
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Vehicle vehicleId;
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Customer customerId;
-    @JoinColumn(name = "payor_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Payor payorId;
-    @JoinColumn(name = "insurance_contact_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Contact insuranceContactId;
-    @JoinColumn(name = "appraiser_contact_id", referencedColumnName = "id")
-    @ManyToOne
-    private Contact appraiserContactId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
+	private int id;
 
-    public Claim() {
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="date_claim_in", nullable=false)
+	private Date dateClaimIn;
 
-    public Claim(Integer id) {
-        this.id = id;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="date_claim_out", nullable=false)
+	private Date dateClaimOut;
 
-    public Claim(Integer id, String claimNumber, String claimStatus, Date dateClaimIn, Date dateClaimOut) {
-        this.id = id;
-        this.claimNumber = claimNumber;
-        this.claimStatus = claimStatus;
-        this.dateClaimIn = dateClaimIn;
-        this.dateClaimOut = dateClaimOut;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="date_rental_car_end")
+	private Date dateRentalCarEnd;
 
-    public Integer getId() {
-        return id;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="date_rental_car_start")
+	private Date dateRentalCarStart;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	//bi-directional many-to-one association to Payor
+	@ManyToOne
+	@JoinColumn(name="payor_id", nullable=false)
+	private Payor payor;
 
-    public String getClaimNumber() {
-        return claimNumber;
-    }
+	//bi-directional many-to-one association to Contact
+	@ManyToOne
+	@JoinColumn(name="insurance_contact_id", nullable=false)
+	private Contact contact1;
 
-    public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
-    }
+	//bi-directional many-to-one association to Contact
+	@ManyToOne
+	@JoinColumn(name="appraiser_contact_id")
+	private Contact contact2;
 
-    public String getClaimStatus() {
-        return claimStatus;
-    }
+	//bi-directional many-to-one association to ClaimLog
+	@OneToMany(mappedBy="claim")
+	private List<ClaimLog> claimLogs;
 
-    public void setClaimStatus(String claimStatus) {
-        this.claimStatus = claimStatus;
-    }
+	//bi-directional many-to-one association to JobOrder
+	@OneToMany(mappedBy="claim")
+	private List<JobOrder> jobOrders;
 
-    public Date getDateClaimIn() {
-        return dateClaimIn;
-    }
+	//bi-directional many-to-one association to Payment
+	@OneToMany(mappedBy="claim")
+	private List<Payment> payments;
 
-    public void setDateClaimIn(Date dateClaimIn) {
-        this.dateClaimIn = dateClaimIn;
-    }
+	public Claim() {
+	}
 
-    public Date getDateClaimOut() {
-        return dateClaimOut;
-    }
+	public int getId() {
+		return this.id;
+	}
 
-    public void setDateClaimOut(Date dateClaimOut) {
-        this.dateClaimOut = dateClaimOut;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public Date getDateRentalCarStart() {
-        return dateRentalCarStart;
-    }
+	public Date getDateClaimIn() {
+		return this.dateClaimIn;
+	}
 
-    public void setDateRentalCarStart(Date dateRentalCarStart) {
-        this.dateRentalCarStart = dateRentalCarStart;
-    }
+	public void setDateClaimIn(Date dateClaimIn) {
+		this.dateClaimIn = dateClaimIn;
+	}
 
-    public Date getDateRentalCarEnd() {
-        return dateRentalCarEnd;
-    }
+	public Date getDateClaimOut() {
+		return this.dateClaimOut;
+	}
 
-    public void setDateRentalCarEnd(Date dateRentalCarEnd) {
-        this.dateRentalCarEnd = dateRentalCarEnd;
-    }
+	public void setDateClaimOut(Date dateClaimOut) {
+		this.dateClaimOut = dateClaimOut;
+	}
 
-    @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
-    }
+	public Date getDateRentalCarEnd() {
+		return this.dateRentalCarEnd;
+	}
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
-    }
+	public void setDateRentalCarEnd(Date dateRentalCarEnd) {
+		this.dateRentalCarEnd = dateRentalCarEnd;
+	}
 
-    @XmlTransient
-    public Collection<ClaimLog> getClaimLogCollection() {
-        return claimLogCollection;
-    }
+	public Date getDateRentalCarStart() {
+		return this.dateRentalCarStart;
+	}
 
-    public void setClaimLogCollection(Collection<ClaimLog> claimLogCollection) {
-        this.claimLogCollection = claimLogCollection;
-    }
+	public void setDateRentalCarStart(Date dateRentalCarStart) {
+		this.dateRentalCarStart = dateRentalCarStart;
+	}
 
-    public Vehicle getVehicleId() {
-        return vehicleId;
-    }
+	public Payor getPayor() {
+		return this.payor;
+	}
 
-    public void setVehicleId(Vehicle vehicleId) {
-        this.vehicleId = vehicleId;
-    }
+	public void setPayor(Payor payor) {
+		this.payor = payor;
+	}
 
-    public Customer getCustomerId() {
-        return customerId;
-    }
+	public Contact getContact1() {
+		return this.contact1;
+	}
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
-    }
+	public void setContact1(Contact contact1) {
+		this.contact1 = contact1;
+	}
 
-    public Payor getPayorId() {
-        return payorId;
-    }
+	public Contact getContact2() {
+		return this.contact2;
+	}
 
-    public void setPayorId(Payor payorId) {
-        this.payorId = payorId;
-    }
+	public void setContact2(Contact contact2) {
+		this.contact2 = contact2;
+	}
 
-    public Contact getInsuranceContactId() {
-        return insuranceContactId;
-    }
+	public List<ClaimLog> getClaimLogs() {
+		return this.claimLogs;
+	}
 
-    public void setInsuranceContactId(Contact insuranceContactId) {
-        this.insuranceContactId = insuranceContactId;
-    }
+	public void setClaimLogs(List<ClaimLog> claimLogs) {
+		this.claimLogs = claimLogs;
+	}
 
-    public Contact getAppraiserContactId() {
-        return appraiserContactId;
-    }
+	public ClaimLog addClaimLog(ClaimLog claimLog) {
+		getClaimLogs().add(claimLog);
+		claimLog.setClaim(this);
 
-    public void setAppraiserContactId(Contact appraiserContactId) {
-        this.appraiserContactId = appraiserContactId;
-    }
+		return claimLog;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+	public ClaimLog removeClaimLog(ClaimLog claimLog) {
+		getClaimLogs().remove(claimLog);
+		claimLog.setClaim(null);
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Claim)) {
-            return false;
-        }
-        Claim other = (Claim) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+		return claimLog;
+	}
 
-    @Override
-    public String toString() {
-        return "com.automo.entity.Claim[ id=" + id + " ]";
-    }
+	public List<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
+
+	public void setJobOrders(List<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
+	}
+
+	public JobOrder addJobOrder(JobOrder jobOrder) {
+		getJobOrders().add(jobOrder);
+		jobOrder.setClaim(this);
+
+		return jobOrder;
+	}
+
+	public JobOrder removeJobOrder(JobOrder jobOrder) {
+		getJobOrders().remove(jobOrder);
+		jobOrder.setClaim(null);
+
+		return jobOrder;
+	}
+
+	public List<Payment> getPayments() {
+		return this.payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
+	}
+
+	public Payment addPayment(Payment payment) {
+		getPayments().add(payment);
+		payment.setClaim(this);
+
+		return payment;
+	}
+
+	public Payment removePayment(Payment payment) {
+		getPayments().remove(payment);
+		payment.setClaim(null);
+
+		return payment;
+	}
 
 }

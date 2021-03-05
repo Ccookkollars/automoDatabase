@@ -3,16 +3,17 @@
   <persistence-unit name="com.automo1" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.automo.entity.Claim</class>
-    <class>com.automo.entity.Claim2</class>
-    <class>com.automo.entity.Payor</class>
+    <class>com.automo.entity.Order</class>
     <class>com.automo.entity.Car</class>
     <class>com.automo.entity.Payment</class>
     <class>com.automo.entity.Contact</class>
     <class>com.automo.entity.Customer</class>
     <class>com.automo.entity.Vehicle</class>
-    <class>com.automo.entity.Contact_1</class>
-    <class>com.automo.entity.Payor_1</class>
+    <class>com.automo.entity.Contact</class>
+    <class>com.automo.entity.Payor</class>
     <class>com.automo.entity.ClaimLog</class>
+    <class>com.automo.entity.CashJob</class>
+    <class>com.automo.entity.JobOrder</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://database-1.cde4bwcff8jh.us-east-2.rds.amazonaws.com:3306/schema_1?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="caleb"/>

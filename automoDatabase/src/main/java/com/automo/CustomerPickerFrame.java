@@ -126,10 +126,10 @@ public class CustomerPickerFrame extends JFrame {
         }
 
         private void addGetters() {
-            getters.add(c -> c.getContactId().getFirstName());
-            getters.add(c -> c.getContactId().getLastName());
-            getters.add(c -> c.getContactId().getPhoneNumber());
-            getters.add(c -> c.getContactId().getEmailAddress());
+            getters.add(c -> c.getContact().getFirstName());
+            getters.add(c -> c.getContact().getLastName());
+            getters.add(c -> c.getContact().getPhoneNumber());
+            getters.add(c -> c.getContact().getEmailAddress());
         }
 
 

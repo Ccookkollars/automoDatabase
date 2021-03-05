@@ -11,16 +11,15 @@ import com.automo.CustomerFrame;
 import com.automo.Event;
 import com.automo.dao.ClaimDao;
 import com.automo.dao.CustomerDao;
+import com.automo.dao.OrderDao;
 import com.automo.entity.Claim;
 import com.automo.entity.Contact;
-import com.automo.entity.Customer;
 import com.automo.entity.Vehicle;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -30,6 +29,7 @@ public class MasterFrame extends javax.swing.JFrame {
     ClaimDao claimDao;
     ApplicationContext ctx = ApplicationContext.getInstance();
     CustomerDao customerDao;
+    OrderDao orderDao;
 
     /**
      * Creates new form MasterFrame
@@ -42,10 +42,14 @@ public class MasterFrame extends javax.swing.JFrame {
             Logger.getLogger(MasterFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+
         claimDao = new ClaimDao();
         customerDao = new CustomerDao();
         claimFrame = new ClaimFrame();
         customerFrame = new CustomerFrame();
+        orderTableModel = new OrderTableModel();
+        orderDao = new OrderDao();
+        setup();
         setTitle("MasterFrame");
         pack();
         setVisible(true);
@@ -61,18 +65,25 @@ public class MasterFrame extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel4 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        ordersPanel = new javax.swing.JPanel();
+        ordersLabel = new javax.swing.JLabel();
+        ordersScrollPane = new javax.swing.JScrollPane();
+        ordersTable = new javax.swing.JTable();
+        newOrderButton = new javax.swing.JButton();
+        findOrderPanel = new javax.swing.JPanel();
+        findOrderLabel = new javax.swing.JLabel();
+        findOrderInputPanel = new javax.swing.JPanel();
+        vehicleMakeLabel = new javax.swing.JLabel();
+        customerNameLabel = new javax.swing.JLabel();
+        vehicleYearLabel = new javax.swing.JLabel();
+        vehicleModelLabel = new javax.swing.JLabel();
         customerNameBox = new javax.swing.JTextField();
         vehicleYearBox = new javax.swing.JTextField();
         vehicleMakeBox = new javax.swing.JTextField();
         vehicleModelBox = new javax.swing.JTextField();
+        findClaimButton = new java.awt.Button();
         findVehicleButton = new java.awt.Button();
         findCustomerButton = new java.awt.Button();
-        findClaimButton = new java.awt.Button();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
@@ -82,32 +93,79 @@ public class MasterFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(null));
-        jPanel4.setLayout(new java.awt.GridBagLayout());
+        ordersPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel5.setText("Vehicle Make");
+        ordersLabel.setText("Orders");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        jPanel4.add(jLabel5, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        ordersPanel.add(ordersLabel, gridBagConstraints);
 
-        jLabel6.setText("Customer Name");
+        ordersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        ordersScrollPane.setViewportView(ordersTable);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        jPanel4.add(jLabel6, gridBagConstraints);
+        ordersPanel.add(ordersScrollPane, gridBagConstraints);
 
-        jLabel7.setText("Vehicle Year");
+        getContentPane().add(ordersPanel, new java.awt.GridBagConstraints());
+
+        newOrderButton.setText("New Order");
+        newOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newOrderButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        getContentPane().add(newOrderButton, gridBagConstraints);
+
+        findOrderPanel.setLayout(new java.awt.GridBagLayout());
+
+        findOrderLabel.setText("Find Order");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        findOrderPanel.add(findOrderLabel, gridBagConstraints);
+
+        findOrderInputPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        findOrderInputPanel.setLayout(new java.awt.GridBagLayout());
+
+        vehicleMakeLabel.setText("Vehicle Make");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        findOrderInputPanel.add(vehicleMakeLabel, gridBagConstraints);
+
+        customerNameLabel.setText("Customer Name");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        findOrderInputPanel.add(customerNameLabel, gridBagConstraints);
+
+        vehicleYearLabel.setText("Vehicle Year");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        jPanel4.add(jLabel7, gridBagConstraints);
+        findOrderInputPanel.add(vehicleYearLabel, gridBagConstraints);
 
-        jLabel8.setText("Vehicle Model");
+        vehicleModelLabel.setText("Vehicle Model");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        jPanel4.add(jLabel8, gridBagConstraints);
+        findOrderInputPanel.add(vehicleModelLabel, gridBagConstraints);
 
         customerNameBox.setText("Lizeth");
         customerNameBox.setPreferredSize(new java.awt.Dimension(80, 27));
@@ -119,7 +177,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        jPanel4.add(customerNameBox, gridBagConstraints);
+        findOrderInputPanel.add(customerNameBox, gridBagConstraints);
 
         vehicleYearBox.setText("2011");
         vehicleYearBox.setMinimumSize(new java.awt.Dimension(1100, 27));
@@ -128,7 +186,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-        jPanel4.add(vehicleYearBox, gridBagConstraints);
+        findOrderInputPanel.add(vehicleYearBox, gridBagConstraints);
 
         vehicleMakeBox.setText("honda");
         vehicleMakeBox.setPreferredSize(new java.awt.Dimension(80, 27));
@@ -140,19 +198,35 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        jPanel4.add(vehicleMakeBox, gridBagConstraints);
+        findOrderInputPanel.add(vehicleMakeBox, gridBagConstraints);
 
         vehicleModelBox.setText("accord");
         vehicleModelBox.setPreferredSize(new java.awt.Dimension(80, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        jPanel4.add(vehicleModelBox, gridBagConstraints);
+        findOrderInputPanel.add(vehicleModelBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        findOrderPanel.add(findOrderInputPanel, gridBagConstraints);
+
+        findClaimButton.setLabel("Find Claim");
+        findClaimButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findClaimButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        findOrderPanel.add(findClaimButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        getContentPane().add(jPanel4, gridBagConstraints);
+        getContentPane().add(findOrderPanel, gridBagConstraints);
 
         findVehicleButton.setLabel("Find Vehicle");
         findVehicleButton.addActionListener(new java.awt.event.ActionListener() {
@@ -174,16 +248,7 @@ public class MasterFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         getContentPane().add(findCustomerButton, gridBagConstraints);
-
-        findClaimButton.setLabel("Find Claim");
-        findClaimButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findClaimButtonActionPerformed(evt);
-            }
-        });
-        getContentPane().add(findClaimButton, new java.awt.GridBagConstraints());
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -207,6 +272,11 @@ public class MasterFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void setup(){
+        orderTableModel.getItems().addAll(orderDao.findAll());
+        ordersTable.setModel(orderTableModel);
+    }
 
     private void findCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findCustomerButtonActionPerformed
         ctx.getEventBus().post(new Event.ShowFrameEvent(ctx.getCustomerPicker()));
@@ -245,6 +315,12 @@ public class MasterFrame extends javax.swing.JFrame {
         customerFrame.pack();
     }//GEN-LAST:event_customerFrameMenuItemActionPerformed
 
+    private void newOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newOrderButtonActionPerformed
+        // TODO add your handling code here:
+        ApplicationContext ctx  = ApplicationContext.getInstance();
+        ctx.getEventBus().post(new Event.ShowFrameEvent(ctx.getSingleOrderFrame()));
+    }//GEN-LAST:event_newOrderButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -282,23 +358,31 @@ public class MasterFrame extends javax.swing.JFrame {
 
     private final CustomerFrame customerFrame;
     private final ClaimFrame claimFrame;
+    private final OrderTableModel orderTableModel;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem customerFrameMenuItem;
     private javax.swing.JTextField customerNameBox;
+    private javax.swing.JLabel customerNameLabel;
     private java.awt.Button findClaimButton;
     private java.awt.Button findCustomerButton;
+    private javax.swing.JPanel findOrderInputPanel;
+    private javax.swing.JLabel findOrderLabel;
+    private javax.swing.JPanel findOrderPanel;
     private java.awt.Button findVehicleButton;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JButton newOrderButton;
+    private javax.swing.JLabel ordersLabel;
+    private javax.swing.JPanel ordersPanel;
+    private javax.swing.JScrollPane ordersScrollPane;
+    private javax.swing.JTable ordersTable;
     private javax.swing.JTextField vehicleMakeBox;
+    private javax.swing.JLabel vehicleMakeLabel;
     private javax.swing.JTextField vehicleModelBox;
+    private javax.swing.JLabel vehicleModelLabel;
     private javax.swing.JTextField vehicleYearBox;
+    private javax.swing.JLabel vehicleYearLabel;
     private javax.swing.JMenu windowMenu;
     // End of variables declaration//GEN-END:variables
 }
